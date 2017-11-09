@@ -20,7 +20,7 @@ export default class Header extends React.Component {
                                 'textAlign': 'center',
                                 'fontSize': '1.3em',
                                 'fontFamily': 'cursive' }}>
-                    Book4Me - Klika Orders Admin
+                    Studio Mor - Klika Orders Admin
                 </header>
                 <div>
                     <NavLink to="/" activeClassName="active" ><button>Todo</button></NavLink>
