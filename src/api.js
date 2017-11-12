@@ -96,10 +96,31 @@ function todoDelete(tsentryid) {
 }
 
 
-function ordersGetPaged(pageindex, pagesize) 
+function ordersGetPaged(pageindex, pagesize, statuses) 
 {
-    return axios.get( api_root + 'orders/' + pageindex + '/' + pagesize );
+    if (!statuses || statuses.length == 0)
+    {
+        return axios.get( api_root + 'orders/paged/' + pageindex + '/' + pagesize );
+    }
+    else 
+    {
+        const status_arr = statuses.map((value) => value.StatusId );
+        const status_str = status_arr.join(',');
+        return axios.get( api_root + 'orders/paged/' + pageindex + '/' + pagesize + '/' + status_str );
+    }
 }
 
 
-export { ordersGetPaged };
+function orderGetById(orderid) 
+{
+    return axios.get( api_root + 'orders/getbyid/' + orderid);
+}
+
+
+function getOrderStatuses() 
+{
+    return axios.get( api_root + 'orders/statuses' );
+}
+
+
+export { ordersGetPaged, getOrderStatuses, orderGetById };

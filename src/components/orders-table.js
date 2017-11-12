@@ -10,21 +10,16 @@ export default class OrdersTable extends React.Component {
     }
 
 
-    onTodoDoubleClick(order) {
-
-        const orderid = todo.orderid;
-        this.props.orderClick(orderid);
-    }
-
-
     onEditClick(order) {
-        const orderid = todo.orderid;
-        
+        console.log('onEditClick: order=')
+        console.dir(order);
+        const orderid = order.OrderId;
+        this.props.orderClick(orderid);
     }
 
     onPrintClick(order) {
         const orderid = todo.orderid;
-        
+        this.props.printClick(orderid);
     }
 
 
@@ -66,7 +61,7 @@ export default class OrdersTable extends React.Component {
         {
             var o = this.props.orders[i];
             var row_class = { true: "row-todo", true: "alert-row" };
-            var row = (<div key={o.orderid} className= { (true ? "row-todo": "") + (true ? "alert-row": "") } onDoubleClick={this.onTodoDoubleClick.bind(this, o)}> 
+            var row = (<div key={o.orderid} className= { (true ? "row-todo": "") + (true ? "alert-row": "") } > 
                             
                             <div className="tbl-col col-inv-2">
                                 { o.OrderId }
@@ -90,10 +85,10 @@ export default class OrdersTable extends React.Component {
                                 { o.OrderStatus }
                             </div>
                             <div className="tbl-col col-inv-6">
-                                <Button bsStyle="primary" onClick={this.onEditClick.bind(this)}>Edit</Button>
+                                <Button bsStyle="primary" onClick={this.onEditClick.bind(this, o)}>Edit</Button>
                             </div>
                             <div className="tbl-col col-inv-6">
-                               <Button bsStyle="primary" onClick={this.onPrintClick.bind(this)}>Print</Button>
+                               <Button bsStyle="primary" onClick={this.onPrintClick.bind(this, o)}>Print</Button>
                             </div>
                         </div>);
             rows.push(row);        
