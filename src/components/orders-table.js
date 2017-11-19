@@ -11,8 +11,6 @@ export default class OrdersTable extends React.Component {
 
 
     onEditClick(order) {
-        console.log('onEditClick: order=')
-        console.dir(order);
         const orderid = order.OrderId;
         this.props.orderClick(orderid);
     }
@@ -27,31 +25,31 @@ export default class OrdersTable extends React.Component {
     render() {
         const header_row = (<div className="row-todo">
                                 
-                                <div className="tbl-col-hdr col-inv-2">
+                                <div key={'1'} className="tbl-col-hdr col-inv-2">
                                     Order Id
                                 </div>
-                                <div className="tbl-col-hdr col-inv-3">
+                                <div key={'12'} className="tbl-col-hdr col-inv-3">
                                     Number
                                 </div>
-                                <div className="tbl-col-hdr col-inv-1">
+                                <div key={'13'} className="tbl-col-hdr col-inv-1">
                                     Type
                                 </div>
-                                <div className="tbl-col-hdr col-inv-7">
+                                <div key={'14'} className="tbl-col-hdr col-inv-7">
                                     Name
                                 </div>
-                                <div className="tbl-col-hdr col-inv-4">
+                                <div key={'15'} className="tbl-col-hdr col-inv-4">
                                     Order date
                                 </div>
-                                <div className="tbl-col-hdr col-inv-5">
+                                <div key={'16'} className="tbl-col-hdr col-inv-5">
                                     StudioMor date
                                 </div>
-                                <div className="tbl-col-hdr col-inv-6">
+                                <div key={'17'} className="tbl-col-hdr col-inv-6">
                                     Status
                                 </div>
-                                <div className="tbl-col-hdr col-inv-6">
+                                <div key={'18'} className="tbl-col-hdr col-inv-6">
                                     Edit
                                 </div>
-                                <div className="tbl-col-hdr col-inv-6">
+                                <div key={'19'} className="tbl-col-hdr col-inv-6">
                                     Print
                                 </div>
                             </div>);
@@ -61,7 +59,8 @@ export default class OrdersTable extends React.Component {
         {
             var o = this.props.orders[i];
             var row_class = { true: "row-todo", true: "alert-row" };
-            var row = (<div key={o.orderid} className= { (true ? "row-todo": "") + (true ? "alert-row": "") } > 
+            var row = (<div key={o.orderid} className= { "row-todo" + (o.OrderStatusId == 3 || o.OrderStatusId == 4 ? " alert-row": "") 
+                                                                    + (o.OrderStatusId == 6 ? " success-row": "" ) } > 
                             
                             <div className="tbl-col col-inv-2">
                                 { o.OrderId }
@@ -79,7 +78,7 @@ export default class OrdersTable extends React.Component {
                                 { o.OrderDate }
                             </div>
                             <div className="tbl-col col-inv-5">
-                                { o.DateCreated }
+                                { o.DateCreated.substr(0, 16) }
                             </div>
                             <div className="tbl-col col-inv-6">
                                 { o.OrderStatus }

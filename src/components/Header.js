@@ -14,7 +14,7 @@ export default class Header extends React.Component {
     
     render() {
         return (
-            <div>
+            <div className="orders-header">
                 <header style={{ 'background': 'lightgreen',                        
                                 'padding': '5px',
                                 'textAlign': 'center',
@@ -22,7 +22,7 @@ export default class Header extends React.Component {
                                 'fontFamily': 'cursive' }}>
                     Studio Mor - Klika Orders Admin
                 </header>
-                <div>
+                <div style={ {display: "none" }}>
                     <NavLink to="/" activeClassName="active" ><button>Todo</button></NavLink>
                     <NavLink to="/invoice" activeClassName="active"><button>Create Invoice</button></NavLink> 
                     <NavLink to="/invoices-view" activeClassName="active"><button>View Invoices</button></NavLink>

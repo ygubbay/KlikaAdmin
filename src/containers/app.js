@@ -24,7 +24,7 @@ export default class App extends React.Component {
             <div className="ts-page">
                 <Header />
 
-                <Route exact path="/" component={TodoPage} />
+                <Route exact path="/" component={ViewOrdersPage} />
                 <Route exact path="/invoice" component={CreateInvoice} />
                 <Route path="/invoices-view" component={ViewInvoicesPage} />
                 <Route path="/orders" component={ViewOrdersPage} />

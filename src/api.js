@@ -123,4 +123,10 @@ function getOrderStatuses()
 }
 
 
-export { ordersGetPaged, getOrderStatuses, orderGetById };
+function orderSave(order) 
+{
+    return axios.put( api_root + 'orders', { order: order });
+}
+
+
+export { ordersGetPaged, getOrderStatuses, orderGetById, orderSave };

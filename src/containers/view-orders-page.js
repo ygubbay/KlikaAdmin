@@ -46,10 +46,12 @@ export default class ViewOrdersPage extends React.Component {
         console.dir(status_list);
         if (status_list && status_list.length > 0)
         {
+            this.setState({ status_list: status_list });
             this.getOrders(this.state.paging.current+1, this.state.pagesize, status_list);
         }
         else 
         {
+            this.setState({ status_list: [] });
             this.getOrders(this.state.paging.current+1, this.state.pagesize);
         }
     }
@@ -57,10 +59,24 @@ export default class ViewOrdersPage extends React.Component {
     getOrders(pageindex, pagesize, order_statuses) {
         api.ordersGetPaged(pageindex, pagesize, order_statuses).then((response) => {
 
-            this.setState({ orders: response.data });
+            this.setState({ orders: response.data, status_list: order_statuses });
         }).catch((err) => {
             alert(err);
         })
+    }
+
+    refreshOrders() {
+
+        const status_list = this.state.status_list;
+
+        if (status_list && status_list.length > 0)
+        {
+            this.getOrders(this.state.paging.current+1, this.state.pagesize, status_list);
+        }
+        else 
+        {
+            this.getOrders(this.state.paging.current+1, this.state.pagesize);
+        }    
     }
 
 
@@ -74,6 +90,13 @@ export default class ViewOrdersPage extends React.Component {
 
         
         this.setState( { single_view: false, single_orderid: null});
+    }
+
+
+    SaveOrderClick(order) {
+
+        this.setState( { single_view: false, single_orderid: null});
+        this.refreshOrders();
     }
 
 
@@ -97,7 +120,7 @@ export default class ViewOrdersPage extends React.Component {
             display = (
            
                 <OrderView orderid={this.state.single_orderid} 
-                            saveClick={ (order) => this.backToViewOrdersClick(order) }
+                            saveClick={ (order) => this.SaveOrderClick(order) }
                              cancelClick={ () => this.backToViewOrdersClick() } />
            );
         }
