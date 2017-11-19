@@ -16,7 +16,7 @@ export default class OrdersTable extends React.Component {
     }
 
     onPrintClick(order) {
-        const orderid = todo.orderid;
+        const orderid = order.OrderId;
         this.props.printClick(orderid);
     }
 

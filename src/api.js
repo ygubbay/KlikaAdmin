@@ -129,4 +129,10 @@ function orderSave(order)
 }
 
 
-export { ordersGetPaged, getOrderStatuses, orderGetById, orderSave };
+function orderPrint(orderid)
+{
+    return axios.get( api_root + 'orders/pdf/orderid/' + orderid);
+}
+
+
+export { ordersGetPaged, getOrderStatuses, orderGetById, orderSave, orderPrint };

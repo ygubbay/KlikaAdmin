@@ -85,6 +85,23 @@ export default class ViewOrdersPage extends React.Component {
         this.setState( { single_view: true, single_orderid: orderid })
     }
 
+   printOrder(orderid) {
+        console.log('printOrder: orderid:', orderid )
+        api.orderPrint(orderid).then((response) => {
+
+
+            const pdf_url = response.data.pdf;
+            console.log('downloading:', pdf_url);
+            downloadFile(pdf_url);
+            return;
+            this.setState({ pdf_print: pdf_url })
+            setTimeout(() => { window.open(this.state.pdf_print); }, 5000);
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+    
 
     backToViewOrdersClick(order) {
 
@@ -130,7 +147,7 @@ export default class ViewOrdersPage extends React.Component {
             <div>
                 <h2>Orders</h2>
                 <div style={{textAlign: "right"}}><StatusFilter handleStatusListChange={(status_list) => this.handleStatusListChange(status_list) } /></div>
-                <OrdersTable orders={this.state.orders} orderClick={(orderid) => this.openOrder(orderid) } />
+                <OrdersTable orders={this.state.orders} orderClick={(orderid) => this.openOrder(orderid)} printClick={(orderid) => this.printOrder(orderid) } />
 
                 <Pager 
                     total = {this.state.paging.total} 
@@ -148,3 +165,47 @@ export default class ViewOrdersPage extends React.Component {
         );
     }
 }
+
+
+window.downloadFile = function (sUrl) {
+
+    //iOS devices do not support downloading. We have to inform user about this.
+    if (/(iP)/g.test(navigator.userAgent)) {
+       //alert('Your device does not support files downloading. Please try again in desktop browser.');
+       window.open(sUrl, '_blank');
+       return false;
+    }
+
+    //If in Chrome or Safari - download via virtual link click
+    if (window.downloadFile.isChrome || window.downloadFile.isSafari) {
+        //Creating new link node.
+        var link = document.createElement('a');
+        link.href = sUrl;
+        link.setAttribute('target','_blank');
+
+        if (link.download !== undefined) {
+            //Set HTML5 download attribute. This will prevent file from opening if supported.
+            var fileName = sUrl.substring(sUrl.lastIndexOf('/') + 1, sUrl.length);
+            link.download = fileName;
+        }
+
+        //Dispatching click event.
+        if (document.createEvent) {
+            var e = document.createEvent('MouseEvents');
+            e.initEvent('click', true, true);
+            link.dispatchEvent(e);
+            return true;
+        }
+    }
+
+    // Force file download (whether supported by server).
+    if (sUrl.indexOf('?') === -1) {
+        sUrl += '?download';
+    }
+
+    window.open(sUrl, '_blank');
+    return true;
+}
+
+window.downloadFile.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
