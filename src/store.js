@@ -23,16 +23,22 @@ const userReducer = (state=initialUser, action) => {
         break;
 
         case "LOGIN_OK":
-            var new_state = _.assign({}, state, { waiting_for_server: false, user: action.payload});
+            var new_state = _.assign({}, state, { waiting_for_server: false, login: action.payload});
             return new_state;
         break;
 
         case "LOGIN_FAIL":
 
-            var new_state = _.assign({}, state, { waiting_for_server: false, alerts: [ { type: danger, msg: 'Login failed'}]});
+            const message = action.payload ? action.payload: 'Login failed';
+            var new_state = _.assign({}, state, { waiting_for_server: false, alerts: [ { type: 'danger', msg: message }]});
             return new_state;
         break;
 
+
+        case "DISMISS_ALERTS":
+
+            var new_state = _.assign({}, state, {alerts: []});
+            return new_state;
         
     }
 

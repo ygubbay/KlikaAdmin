@@ -135,4 +135,10 @@ function orderPrint(orderid)
 }
 
 
+exports.login = (email, password) => {
+
+    return axios.post( api_root + 'users/login', { email: email, password: password });
+}
+
+
 export { ordersGetPaged, getOrderStatuses, orderGetById, orderSave, orderPrint };
