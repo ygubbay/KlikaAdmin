@@ -26,16 +26,16 @@ class EnsureLoggedInContainer extends React.Component {
   //   }
   // }
 
-  componentDidMount()
-  {
-    if (!this.props.user.login)
-      this.props.history.push('/login');
-  }
+  // componentDidMount()
+  // {
+  //   if (!this.props.user.login)
+  //     this.props.history.push('/login');
+  // }
 
 
   componentWillReceiveProps(nextProps) 
   {
-    if (this.props.user.login || nextProps.user.login) 
+    if (this.props.user.login) 
     {
       // do nothing
     }

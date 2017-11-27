@@ -20,7 +20,7 @@ class LoginPage extends React.Component {
             email: '',
             password: ''
         }
-  
+        
     }
 
     componentWillMount() {
@@ -37,9 +37,10 @@ class LoginPage extends React.Component {
     return JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
    }
 
-    onLoginButtonClick() {
+    onLoginButtonClick(event) {
 
         this.props.loginUser(this.state.email, this.state.password);
+        event.preventDefault();
     }
 
    onEmailChange(event) {
@@ -79,6 +80,7 @@ class LoginPage extends React.Component {
         return (
 
             <div className="login-page">
+               <form onSubmit={this.onLoginButtonClick.bind(this)}>
                <div><h2>Studio Mor Login</h2></div>
                <div className="login-line">
                    <div>Email</div>
@@ -90,12 +92,13 @@ class LoginPage extends React.Component {
                </div>
 
                <div style={{marginTop: '20px'}}>
-                   <Button type="submit" bsStyle="primary" style={{width: '100px'}}  onClick={this.onLoginButtonClick.bind(this)}  disabled={!is_input_valid}>Login</Button>
+                   <Button type="submit"  bsStyle="primary" style={{width: '225px', height: '45px'}}   disabled={!is_input_valid}>Login</Button>
                 </div>
                <div><a className="forgot-password" href="Forgot password">Forgot password</a></div>
                <div style={{marginTop: '20px'}}>
                    {alert_element}
                </div>
+               </form>
             </div>
         );
     }

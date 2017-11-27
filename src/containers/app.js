@@ -38,9 +38,7 @@ class App extends React.Component {
                         
                     <Route path="/login" component={LoginPage} />
                     <Route path="/pizzas" component={ViewOrdersPage} />
-                    <EnsureLoggedInContainer>
-                        <Route path="/orders" component={ViewOrdersPage}  />
-                    </EnsureLoggedInContainer>
+                    <Route path="/orders" component={ViewOrdersPage}  />
                     
                 </div>
                 

@@ -43,6 +43,9 @@ class ViewOrdersPage extends React.Component {
     }
 
     componentWillMount() {
+
+        if (!this.props.user.login)
+            this.props.history.push('/login');
         this.getOrders(this.state.paging.current+1, this.state.pagesize);
     }
 
