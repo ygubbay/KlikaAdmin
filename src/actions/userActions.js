@@ -11,13 +11,17 @@ export function loginUser(username, password) {
     //    type: "LOGIN_OK",
     //    payload: { username: 'ygubbay'}
     // };
-
+    console.log('loginUser:', username, password);
     return (dispatch) => {
-        dispatch({type: "LOGIN_START", payload: null});
+
+        if (!username || !password)
+            return;
+        //dispatch({type: "LOGIN_START", payload: null});
         //axios.get("http://rest.learncode.academy/api/wstern/users")
         api.login(username, password)
             .then((response) => {
-
+                console.log('loginUser1:');
+                console.dir(response);
                 if (response.data.is_error)
                 {
                     dispatch({ type: "LOGIN_FAIL", payload: response.data.error_message});
@@ -27,6 +31,8 @@ export function loginUser(username, password) {
                 }
             })
             .catch((err) => {
+                console.log('loginUser2:');
+                console.dir(err);
                 dispatch({ type: "LOGIN_FAIL", payload: err});
             })
     }

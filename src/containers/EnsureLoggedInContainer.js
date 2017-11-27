@@ -2,37 +2,71 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import {  withRouter } from 'react-router-dom'
 
-import { loginUser, dismissAlerts } from '../actions/userActions';
 
 class EnsureLoggedInContainer extends React.Component {
-  componentDidMount() {
-    //const { dispatch, currentURL } = this.props
+   constructor(props) {
+        super(props);
 
-    if (!isLoggedIn) {
-      // set the current url/path for future redirection (we use a Redux action)
-      // then redirect (we use a React Router method)
-      //dispatch(setRedirectUrl(currentURL))
-      browserHistory.replace("/login")
+        this.state = { };
+  
+    }
+
+  //  componentDidMount() {
+     
+  //   //const { dispatch, currentURL } = this.props
+  //   console.log('EnsureLoggedInContainer.componentDidMount');
+  //   if (!this.props.user.login) {
+  //     // set the current url/path for future redirection (we use a Redux action)
+  //     // then redirect (we use a React Router method)
+  //     //dispatch(setRedirectUrl(currentURL))
+  //      this.props.history.push('/login');
+       
+  //   }
+  // }
+
+  componentDidMount()
+  {
+    if (!this.props.user.login)
+      this.props.history.push('/login');
+  }
+
+
+  componentWillReceiveProps(nextProps) 
+  {
+    if (this.props.user.login || nextProps.user.login) 
+    {
+      // do nothing
+    }
+    else 
+    {
+      this.props.history.push('/login');
     }
   }
+
+
+
 
   render() {
-    if (isLoggedIn) {
-      return this.props.children
-    } else {
-      return null
-    }
+    console.log('EnsureLoggedInContainer.render:');
+    console.dir(this.state);
+    console.dir(this.props);
+    return (!this.props.user.login) ? <div></div> : this.props.children;
   }
 }
 
-// Grab a reference to the current URL. If this is a web app and you are
-// using React Router, you can use `ownProps` to find the URL. Other
-// platforms (Native) or routing libraries have similar ways to find
-// the current position in the app.
-function mapStateToProps(state, ownProps) {
-  var myProps = _.assign({}, { user: state.user });
-    return myProps;
+     
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({}, dispatch);
 }
 
-export default connect(mapStateToProps)(EnsureLoggedInContainer)
+const mapStateToProps = (state) => {
+
+    var myProps = _.assign({}, { user: state.user });
+    return myProps;
+
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EnsureLoggedInContainer))

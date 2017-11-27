@@ -3,34 +3,59 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  Link, browserHistory
 } from 'react-router-dom'
 import Header from '../components/Header';
 import LoginPage from './login-page';
 import ViewOrdersPage from './view-orders-page';
+import EnsureLoggedInContainer from './EnsureLoggedInContainer';
+import { isLoggedIn } from '../utils';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-export default class App extends React.Component {
+class App extends React.Component {
 
+    componentDidUpdate(prevProps) {
+        const { dispatch, redirectUrl } = this.props
+        const isLoggingOut = prevProps.isLoggedIn && !this.props.isLoggedIn
+        const isLoggingIn = !prevProps.isLoggedIn && this.props.isLoggedIn
+
+        // if (isLoggingIn) {
+        // dispatch(navigateTo(redirectUrl))
+        // } else if (isLoggingOut) {
+        // // do any kind of cleanup or post-logout redirection here
+        // }
+    }
   
     render() {
 
                                    
         return (
-            <Router>          
-            <div className="ts-page">
-                <Header />
-
-                <Route exact path="/" component={LoginPage} />
-                <Route exact path="/login" component={LoginPage} />
-
-                <Route component={EnsureLoggedInContainer}>
-                    <Route path="/orders" component={ViewOrdersPage}  />
-                </Route>
+            <Router>
+                <div className="ts-page">
+                    <Route exact path="/" component={LoginPage} />         
+                        
+                    <Route path="/login" component={LoginPage} />
+                    <Route path="/pizzas" component={ViewOrdersPage} />
+                    <EnsureLoggedInContainer>
+                        <Route path="/orders" component={ViewOrdersPage}  />
+                    </EnsureLoggedInContainer>
+                    
+                </div>
                 
-            </div>
-               </Router>
+            </Router>
         );
     }
       
 }
+
+function mapStateToProps(state) {
+  return {
+    isLoggedIn: state.loggedIn,
+    redirectUrl: state.redirectUrl
+  }
+}
+
+export default connect(mapStateToProps)(App)
+          

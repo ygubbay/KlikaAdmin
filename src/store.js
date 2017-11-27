@@ -2,7 +2,7 @@
 import _ from "lodash";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import axios from "axios";
-import {createLogger } from "redux-logger";
+//import {createLogger } from "redux-logger";
 import thunk from "redux-thunk";
 
 
@@ -18,19 +18,32 @@ const userReducer = (state=initialUser, action) => {
 
         case "LOGIN_START":
 
-            var new_state = _.assign({}, state, { waiting_for_server: true, user: null })
+            var new_state = _.assign({}, state, { waiting_for_server: true, login: null })
             return new_state;
         break;
 
         case "LOGIN_OK":
-            var new_state = _.assign({}, state, { waiting_for_server: false, login: action.payload});
+            var new_state = _.assign({}, state, { waiting_for_server: false, login: action.payload.user});
             return new_state;
         break;
 
         case "LOGIN_FAIL":
 
-            const message = action.payload ? action.payload: 'Login failed';
-            var new_state = _.assign({}, state, { waiting_for_server: false, alerts: [ { type: 'danger', msg: message }]});
+            console.log('store.LOGIN_FAIL:');
+            console.dir(action);
+            let message;
+            if (!action.payload) {
+                message = 'Login failed.';
+            }
+            else if (typeof action.payload === 'string' )
+            {
+                message = action.payload;
+            }
+            else {
+                message = JSON.stringify(action.payload);
+            }
+
+            var new_state = _.assign({}, state, { waiting_for_server: false, login: null, alerts: [ { type: 'danger', msg: message }]});
             return new_state;
         break;
 
@@ -80,11 +93,11 @@ const tsReducer = (state=[], action) => {
 }
 
 
-//const logger = (store) => (next) => (action) => {
-//    console.log("action fired", action);
-//    next(action);
-//}
-const middleware = applyMiddleware(thunk, createLogger());
+const logger = (store) => (next) => (action) => {
+   console.log("action fired", action);
+   next(action);
+}
+const middleware = applyMiddleware(thunk);
 
 
 const reducers = combineReducers({

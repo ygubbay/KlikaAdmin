@@ -14,11 +14,17 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import { Navbar, Button } from 'react-bootstrap';
+import Header from '../components/Header';
 
 
 import Pager from 'rc-pager';
 
-export default class ViewOrdersPage extends React.Component {
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+
+class ViewOrdersPage extends React.Component {
   constructor(props) {
         super(props);
 
@@ -39,6 +45,10 @@ export default class ViewOrdersPage extends React.Component {
     componentWillMount() {
         this.getOrders(this.state.paging.current+1, this.state.pagesize);
     }
+
+   shouldComponentUpdate(nextProps, nextState) {
+    return JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
+   }
 
     handleStatusListChange(status_list) {
 
@@ -145,7 +155,9 @@ export default class ViewOrdersPage extends React.Component {
         else 
         {
             display = (
-            <div>
+            <div  className="ts-page">
+                <Header />
+                
                 <h2>Orders</h2>
                 <div style={{textAlign: "right"}}><StatusFilter handleStatusListChange={(status_list) => this.handleStatusListChange(status_list) } /></div>
                 <OrdersTable orders={this.state.orders} orderClick={(orderid) => this.openOrder(orderid)} printClick={(orderid) => this.printOrder(orderid) } />
@@ -166,6 +178,23 @@ export default class ViewOrdersPage extends React.Component {
         );
     }
 }
+
+   
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    
+  }, dispatch);
+}
+
+const mapStateToProps = (state) => {
+
+    var myProps = _.assign({}, { user: state.user });
+    return myProps;
+
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewOrdersPage);
+
 
 
 window.downloadFile = function (sUrl) {

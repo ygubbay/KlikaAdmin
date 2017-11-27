@@ -33,6 +33,10 @@ class LoginPage extends React.Component {
         }
     }
 
+   shouldComponentUpdate(nextProps, nextState) {
+    return JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
+   }
+
     onLoginButtonClick() {
 
         this.props.loginUser(this.state.email, this.state.password);
