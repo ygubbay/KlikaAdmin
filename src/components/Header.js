@@ -45,7 +45,7 @@ class Header extends React.Component {
                
                 <div>
                     <ButtonGroup justified>
-                        <NavLink className="btn btn-default" to="/tracking">Orders</NavLink>
+                        <NavLink className="btn btn-default" to="/orders">Orders</NavLink>
                         <NavLink className="btn btn-default" to="/tracking">Delivery Tracking</NavLink>
                         <DropdownButton title="Admin" id="bg-justified-dropdown">
                             <li role="presentation">
