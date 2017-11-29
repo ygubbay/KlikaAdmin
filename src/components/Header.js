@@ -2,18 +2,37 @@
 import _ from 'lodash';
 import React from 'react';
 import { NavLink } from 'react-router-dom'
+import { Button, ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
+
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 
 
-export default class Header extends React.Component {
+class Header extends React.Component {
 
     constructor(props) {
         super(props);
     }
 
+
+    onOrdersMenuClick() 
+    {
+        this.props.menuOrdersClick();
+
+    }
+
+    onTrackingMenuClick() 
+    {
+        this.props.menuAddTrackingClick();
+
+    }
+
     
     render() {
         return (
+
             <div className="orders-header">
                 <header style={{ 'background': 'lightgreen',                        
                                 'padding': '5px',
@@ -22,13 +41,42 @@ export default class Header extends React.Component {
                                 'fontFamily': 'cursive' }}>
                     Studio Mor - Klika Orders Admin
                 </header>
-                <div style={ {display: "none" }}>
-                    <NavLink to="/" activeClassName="active" ><button>Todo</button></NavLink>
-                    <NavLink to="/invoice" activeClassName="active"><button>Create Invoice</button></NavLink> 
-                    <NavLink to="/invoices-view" activeClassName="active"><button>View Invoices</button></NavLink>
+               
+               
+                <div>
+                    <ButtonGroup justified>
+                        <NavLink className="btn btn-default" to="/tracking">Orders</NavLink>
+                        <NavLink className="btn btn-default" to="/tracking">Delivery Tracking</NavLink>
+                        <DropdownButton title="Admin" id="bg-justified-dropdown">
+                            <li role="presentation">
+                                <NavLink to="/login">Users</NavLink>
+                            </li>
+                        <li role="presentation">
+                            <NavLink to="/login">Logout</NavLink>
+                        </li>
+                        </DropdownButton>
+                    </ButtonGroup>
                 </div>
             </div>
+
         );
     }
 }
+
+
+  
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    
+  }, dispatch);
+}
+
+const mapStateToProps = (state) => {
+
+    var myProps = _.assign({}, { user: state.user });
+    return myProps;
+
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
 

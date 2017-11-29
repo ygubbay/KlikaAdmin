@@ -1,13 +1,14 @@
 
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Route,
   Link, browserHistory
 } from 'react-router-dom'
 import Header from '../components/Header';
 import LoginPage from './login-page';
 import ViewOrdersPage from './view-orders-page';
+import TrackingPage from './tracking-page';
 import EnsureLoggedInContainer from './EnsureLoggedInContainer';
 import { isLoggedIn } from '../utils';
 
@@ -32,17 +33,20 @@ class App extends React.Component {
 
                                    
         return (
-            <Router>
-                <div className="ts-page">
+            <BrowserRouter>
+                <div>
                     <Route exact path="/" component={LoginPage} />         
                         
-                    <Route path="/login" component={LoginPage} />
-                    <Route path="/pizzas" component={ViewOrdersPage} />
-                    <Route path="/orders" component={ViewOrdersPage}  />
+                    <Route exact path="/login" component={LoginPage} />
+
+                    
+                    <Route exact path="/tracking" component={TrackingPage} />
+                    <Route exact path="/orders" component={ViewOrdersPage}  />
+                    
                     
                 </div>
                 
-            </Router>
+            </BrowserRouter>
         );
     }
       

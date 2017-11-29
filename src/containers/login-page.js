@@ -25,6 +25,9 @@ class LoginPage extends React.Component {
 
     componentWillMount() {
 
+        // need to do a logout here...
+
+        
         const email = utils.getCookie('email');
 
         if (email != undefined)
