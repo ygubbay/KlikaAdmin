@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom'
 import { Button, ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
 
 
+import { logout } from '../actions/userActions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -29,6 +30,11 @@ class Header extends React.Component {
 
     }
 
+    onLogoutClick() 
+    {
+        this.props.logout();
+    }
+
     
     render() {
         return (
@@ -47,12 +53,13 @@ class Header extends React.Component {
                     <ButtonGroup justified>
                         <NavLink className="btn btn-default" to="/orders">Orders</NavLink>
                         <NavLink className="btn btn-default" to="/tracking">Delivery Tracking</NavLink>
+                        <NavLink className="btn btn-default" to="/dailyjobs">Daily Jobs</NavLink>
                         <DropdownButton title="Admin" id="bg-justified-dropdown">
                             <li role="presentation">
                                 <NavLink to="/login">Users</NavLink>
                             </li>
                         <li role="presentation">
-                            <NavLink to="/login">Logout</NavLink>
+                            <NavLink to="/login" onClick={this.onLogoutClick.bind(this)}>Logout</NavLink>
                         </li>
                         </DropdownButton>
                     </ButtonGroup>
@@ -67,7 +74,7 @@ class Header extends React.Component {
   
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    
+    logout
   }, dispatch);
 }
 

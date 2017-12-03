@@ -129,9 +129,20 @@ function getOrderStatuses()
 }
 
 
+exports.getDailyOrders = (selected_day) => 
+{
+    return axios.get( api_root + 'orders/daily/' + selected_day );
+}
+
+
 function orderSave(order) 
 {
     return axios.put( api_root + 'orders', { order: order });
+}
+
+function saveTrackingNumber(order_number, tracking_number) 
+{
+    return axios.post( api_root + 'orders/tracking', { order_number: order_number, tracking_number: tracking_number });
 }
 
 
@@ -147,4 +158,4 @@ exports.login = (email, password) => {
 }
 
 
-export { ordersGetPaged, getOrderStatuses, orderGetById, orderSave, orderPrint };
+export { ordersGetPaged, getOrderStatuses, orderGetById, orderSave, orderPrint, saveTrackingNumber };

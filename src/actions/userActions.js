@@ -32,6 +32,14 @@ export function loginUser(username, password) {
     }
 }
 
+
+export function logout() {
+    return {
+        type: "LOGOUT",
+        payload: null
+    }
+}
+
 export function dismissAlerts() {
 
     return {

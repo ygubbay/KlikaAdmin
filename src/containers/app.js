@@ -9,6 +9,7 @@ import Header from '../components/Header';
 import LoginPage from './login-page';
 import ViewOrdersPage from './view-orders-page';
 import TrackingPage from './tracking-page';
+import DailyOrdersPage from './daily-orders-page';
 import EnsureLoggedInContainer from './EnsureLoggedInContainer';
 import { isLoggedIn } from '../utils';
 
@@ -37,6 +38,7 @@ class App extends React.Component {
 
                     
                     <Route exact path="/tracking" component={TrackingPage} />
+                    <Route exact path="/dailyjobs" component={DailyOrdersPage} />
                     <Route exact path="/orders" component={ViewOrdersPage}  />
                     
                     

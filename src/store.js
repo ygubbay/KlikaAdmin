@@ -27,6 +27,10 @@ const userReducer = (state=initialUser, action) => {
             return new_state;
         break;
 
+        case "LOGOUT":
+            var new_state = _.assign({}, state, { login: null });
+            return new_state;
+
         case "LOGIN_FAIL":
 
             console.log('store.LOGIN_FAIL:');

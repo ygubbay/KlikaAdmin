@@ -29,7 +29,8 @@ class TrackingPage extends React.Component {
         this.state = {
             tracking_page_order: null,
             order_number: '',
-            tracking_number: ''
+            tracking_number: '',
+            tracking_number_saved: false
         }
   
     }
@@ -51,6 +52,7 @@ class TrackingPage extends React.Component {
         {
             this.setState({ tracking_page_order: nextProps.user.tracking_page_order }); 
         }
+        
     }
 
     focusOrderNumber() {
@@ -71,7 +73,23 @@ class TrackingPage extends React.Component {
 
     onTrackingNumberChange(event) 
     {
-        this.setState({tracking_number: event.target.value});
+        const tracking_number = event.target.value;
+        this.setState({tracking_number: tracking_number});
+        console.log('onTrackingNumberChange', tracking_number);
+
+        //saveTrackingNumber
+        if (this.state.order_number && tracking_number) {
+
+            api.saveTrackingNumber(this.state.order_number, tracking_number).then((response) => {
+
+            this.props.history.push('/orders');
+            console.log('onTrackingNumberChange:');
+            console.dir(response);
+        }).catch((err) => {
+
+            console.log(err);
+        });
+        }
     }
 
 
