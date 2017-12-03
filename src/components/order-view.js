@@ -13,13 +13,22 @@ export default class OrderView extends React.Component {
 
     componentDidMount() {
 
-        api.orderGetById(this.props.orderid).then((response) => 
+        if (this.props.orderid) 
         {
+            // orderid: get order from api
+            api.orderGetById(this.props.orderid).then((response) => 
+            {
 
-            this.setState({ order: response.data });
-            console.log('setState order:');
-            console.log(response.data);
-        }).catch((err) => console.log(err) );
+                this.setState({ order: response.data });
+                console.log('setState order:');
+                console.log(response.data);
+            }).catch((err) => console.log(err) );
+        }
+        else if (this.props.order) {
+
+            // order: use the order supplied 
+            this.setState({ order: this.props.order });
+        }
 
         api.getOrderStatuses().then((response) => 
         {
@@ -27,6 +36,12 @@ export default class OrderView extends React.Component {
             this.setState({ statuses: statuses });
         }).catch((err) => console.log(err) );
     }
+
+
+    // componentWillReceiveProps(nextProps) 
+    // {
+    //     if (nextProps.tracking_page_order)
+    // }
 
     onStatusClick(status_id) {
 
@@ -72,6 +87,10 @@ export default class OrderView extends React.Component {
 
         const status_buttons =  this.state.statuses.map((status, index) => <MenuItem key={'mi' + index} eventKey={status.StatusId} >{status.Name}</MenuItem>);                                               
 
+        const status_display = this.props.view_only ? order.OrderStatus : 
+                                                    <DropdownButton bsStyle={order.OrderStatusId == 3 || order.OrderStatusId == 4 ? 'danger': 'primary' } title={order.OrderStatus ? order.OrderStatus: 'unknown'} onSelect={(e, key) => this.onStatusClick(e, key)} id="dropdown-size-medium">
+                                                        {status_buttons}
+                                                    </DropdownButton>;
       
         return (
 
@@ -104,9 +123,15 @@ export default class OrderView extends React.Component {
                         </div>
                         <div>
                             <div className="fld fld1">Status</div>
-                            <div className="fld fld2"><DropdownButton bsStyle={order.OrderStatusId == 3 || order.OrderStatusId == 4 ? 'danger': 'primary' } title={order.OrderStatus ? order.OrderStatus: 'unknown'} onSelect={(e, key) => this.onStatusClick(e, key)} id="dropdown-size-medium">
-                                                        {status_buttons}
-                                                    </DropdownButton>
+                            <div className="fld fld2">{status_display}
+                        </div>
+                        <div>
+                            <div className="fld fld1">Tracking Number</div>
+                            <div className="fld fld2">{order.TrackingNumber}</div>
+                        </div>
+                        <div>
+                            <div className="fld fld1">Tracking Date</div>
+                            <div className="fld fld2">{order.TrackingDate}</div>
                         </div>
                     
                 </div>
@@ -147,12 +172,13 @@ export default class OrderView extends React.Component {
                             <div className="fld fld1">Mail</div>
                             <div className="fld fld2">{order.Mail}</div>
                         </div>
+
                     </div>
                 </div>
                 <div style={{clear: "both"}}></div>
                
                
-                <div>
+                <div style={{display: this.props.view_only ? 'none': 'block'}}>
                     <Button bsStyle="success" onClick={this.onSaveClick.bind(this, this.state.order)}>Save</Button>&nbsp;
                     <Button bsStyle="danger" onClick={this.onCancelClick.bind(this)}>Cancel</Button>
                     

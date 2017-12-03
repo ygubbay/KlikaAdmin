@@ -5,12 +5,6 @@ import * as api from "../api";
 
 export function loginUser(username, password) {
 
-
-
-    // return {
-    //    type: "LOGIN_OK",
-    //    payload: { username: 'ygubbay'}
-    // };
     console.log('loginUser:', username, password);
     return (dispatch) => {
 
@@ -43,6 +37,32 @@ export function dismissAlerts() {
     return {
         type: "DISMISS_ALERTS",
         payload: null
+    }
+}
+
+
+export function getTrackingPageOrder(order_number) {
+    console.log('getTrackingPageOrder:', order_number);
+    return (dispatch) => {
+
+        if (!order_number)
+            return;
+
+
+        api.orderGetByOrderNumber(order_number)
+            .then((response) => {
+                console.log('orderGetByOrderNumber1:');
+                console.dir(response);
+                
+                dispatch({type: "GET_TRACKINGPAGE_ORDER", payload: response.data});
+                
+            }).catch((err) => {
+                console.log('orderGetByOrderNumber2:');
+                console.dir(err);
+                dispatch({ type: "ERROR_OCCURRED", payload: err});
+            });
+
+       
     }
 }
 

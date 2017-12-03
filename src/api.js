@@ -117,6 +117,12 @@ function orderGetById(orderid)
 }
 
 
+exports.orderGetByOrderNumber = (order_number) =>
+{
+    return axios.get( api_root + 'orders/getbynumber/' + order_number);
+}
+
+
 function getOrderStatuses() 
 {
     return axios.get( api_root + 'orders/statuses' );

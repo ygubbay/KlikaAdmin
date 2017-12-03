@@ -4,9 +4,8 @@ import React from 'react';
 
 import * as api from '../api';
 
-import OrdersTable from '../components/orders-table';
-import StatusFilter from '../components/status-filter';
 import OrderView from '../components/order-view';
+import { getTrackingPageOrder} from '../actions/userActions';
 
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import Grid from 'react-bootstrap/lib/Grid';
@@ -28,15 +27,9 @@ class TrackingPage extends React.Component {
         super(props);
 
         this.state = {
-            pagesize: 10, 
-            orders: [],
-            single_view: false,
-            single_invoiceid: 0,  // dummy
-            paging: {
-                total: 10,
-                current: 0
-            },
-            order_statuses: []
+            tracking_page_order: null,
+            order_number: '',
+            tracking_number: ''
         }
   
     }
@@ -45,119 +38,79 @@ class TrackingPage extends React.Component {
 
         if (!this.props.user.login)
             this.props.history.push('/login');
-        this.getOrders(this.state.paging.current+1, this.state.pagesize);
     }
 
-   shouldComponentUpdate(nextProps, nextState) {
-    return JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
-   }
+    componentDidMount() {
+        this.focusOrderNumber();
+    }
 
-    handleStatusListChange(status_list) {
 
-        console.log('status_list:');
-        console.dir(status_list);
-        if (status_list && status_list.length > 0)
+    componentWillReceiveProps(nextProps) 
+    {
+        if (nextProps.user.tracking_page_order)
         {
-            this.setState({ status_list: status_list });
-            this.getOrders(this.state.paging.current+1, this.state.pagesize, status_list);
-        }
-        else 
-        {
-            this.setState({ status_list: [] });
-            this.getOrders(this.state.paging.current+1, this.state.pagesize);
+            this.setState({ tracking_page_order: nextProps.user.tracking_page_order }); 
         }
     }
 
-    getOrders(pageindex, pagesize, order_statuses) {
-        api.ordersGetPaged(pageindex, pagesize, order_statuses).then((response) => {
-
-            this.setState({ orders: response.data, status_list: order_statuses });
-        }).catch((err) => {
-            alert(err);
-        })
+    focusOrderNumber() {
+        this.OrderNumberInput.focus();
     }
 
-    refreshOrders() {
+    onOrderNumberChange(event) {
 
-        const status_list = this.state.status_list;
+        const order_number = event.target.value;
+        console.log('trackingnumber focus:', order_number);
+        this.setState({order_number: order_number});
+        this.TrackingNumberInput.focus();
 
-        if (status_list && status_list.length > 0)
-        {
-            this.getOrders(this.state.paging.current+1, this.state.pagesize, status_list);
-        }
-        else 
-        {
-            this.getOrders(this.state.paging.current+1, this.state.pagesize);
-        }    
+        // getOrder
+        this.props.getTrackingPageOrder(order_number);
     }
 
 
-    openOrder(orderid) {
-        console.log('openOrder: orderid:', orderid )
-        this.setState( { single_view: true, single_orderid: orderid })
+    onTrackingNumberChange(event) 
+    {
+        this.setState({tracking_number: event.target.value});
     }
-
-   printOrder(orderid) {
-        console.log('printOrder: orderid:', orderid )
-        api.orderPrint(orderid).then((response) => {
-
-
-            const pdf_url = response.data.pdf;
-            console.log('downloading:', pdf_url);
-            this.setState({ pdf_print: pdf_url })
-            //downloadFile(pdf_url);
-            setTimeout(() => { downloadFile(this.state.pdf_print); }, 1000);
-            
-            
-        }).catch((err) => {
-            console.log(err);
-        })
-    }
-
-    
-
-    backToViewOrdersClick(order) {
-
-        
-        this.setState( { single_view: false, single_orderid: null});
-    }
-
-
-    SaveOrderClick(order) {
-
-        this.setState( { single_view: false, single_orderid: null});
-        this.refreshOrders();
-    }
-
-
-    handlePageChanged(page) {
-        
-        const paging = {...this.state.paging };
-        paging.current = page;
-        this.setState({ paging });
-        this.getOrders(page+1, this.state.pagesize);
-    }
-
-
-
 
 
     render() {
 
+        const tracking_order = this.state.tracking_page_order;
+
+        var display_order = tracking_order ? 
+                             <div>
+                                <hr />
+
+                                <OrderView order={tracking_order} view_only={true} />
+                            </div>: '';
+
             return (
-            <div className="ts-page">
+            <div className="ts-page tracking-page">
                 <Header />
                 <h2>Delivery Tracking</h2>
 
-                <div>
-                <label>Order Number:</label>
-                <input type="text" style={{fontSize: "2em"}} />
+                <div className="line">
+                      <div className="fld fld1">
+                        <label>Order Number:</label>
+                      </div>
+                      <div className="fld fld2">
+                        <input type="text" className="input-scan"  ref={(input) => { this.OrderNumberInput = input; }} onChange={this.onOrderNumberChange.bind(this)} />
+                      </div>
                 </div>
 
-                <div>
-                <label>Tracking Number:</label>
-                <input type="text" style={{fontSize: "2em"}} />
+                <div className="line">
+                     <div className="fld fld1">
+                        <label>Tracking Number:</label>
+                      </div>
+                      <div className="fld fld2">
+                        <input type="text" className="input-scan" ref={(input) => {this.TrackingNumberInput = input; }} onChange={this.onTrackingNumberChange.bind(this)} />
+                      </div>
                 </div>
+
+              
+               {display_order}
 
             </div>
             );
@@ -167,6 +120,7 @@ class TrackingPage extends React.Component {
    
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
+      getTrackingPageOrder
     
   }, dispatch);
 }

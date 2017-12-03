@@ -22,11 +22,7 @@ class App extends React.Component {
         const isLoggingOut = prevProps.isLoggedIn && !this.props.isLoggedIn
         const isLoggingIn = !prevProps.isLoggedIn && this.props.isLoggedIn
 
-        // if (isLoggingIn) {
-        // dispatch(navigateTo(redirectUrl))
-        // } else if (isLoggingOut) {
-        // // do any kind of cleanup or post-logout redirection here
-        // }
+        
     }
   
     render() {

@@ -47,6 +47,12 @@ const userReducer = (state=initialUser, action) => {
             return new_state;
         break;
 
+        case "GET_TRACKINGPAGE_ORDER":
+
+            var new_state = _.assign({}, state, { tracking_page_order: action.payload });
+            return new_state;
+        break;
+
 
         case "DISMISS_ALERTS":
 
