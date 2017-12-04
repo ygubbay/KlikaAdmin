@@ -27,7 +27,7 @@ export function loginUser(username, password) {
             .catch((err) => {
                 console.log('loginUser2:');
                 console.dir(err);
-                dispatch({ type: "LOGIN_FAIL", payload: err});
+                dispatch({ type: "LOGIN_FAIL", payload: "Error occurred during login.  Please contact System Administrator."});
             })
     }
 }

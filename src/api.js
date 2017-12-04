@@ -1,48 +1,48 @@
 import axios from "axios";
 
-const api_root = "http://localhost:9090/api/";
+const config = require('../config.js');
 
 function projectsGetAll(customerid) {
 
-    return axios.get(api_root + 'projects/' + customerid);    
+    return axios.get(config.api_root + 'projects/' + customerid);    
 }
 
 function projectsGetActive(customerid) {
 
-    return axios.get(api_root + 'projects/active/' + customerid);    
+    return axios.get(config.api_root + 'projects/active/' + customerid);    
 }
 
 function getProjectTodosInMonth(userid, yyyyMM) {
 
     //http://localhost:9000/api/projects/todos/monthly/201701
-    return axios.get(api_root + 'projects/todos/monthly/' + userid + '/' + yyyyMM);
+    return axios.get(config.api_root + 'projects/todos/monthly/' + userid + '/' + yyyyMM);
 }
 
 
 function todosGetByDay(yyyyMMdd) {
     //http://localhost:9000/api/todos/day/20110404
-    return axios.get(api_root + 'todos/day/' + yyyyMMdd);
+    return axios.get(config.api_root + 'todos/day/' + yyyyMMdd);
 }
 
 function todosGetDailyStats(yyyyMMdd) {
     //http://localhost:9000/api/todos/day/stats/20170118
-    return axios.get(api_root + 'todos/day/stats/' + yyyyMMdd);
+    return axios.get(config.api_root + 'todos/day/stats/' + yyyyMMdd);
 
 }
 function todosProjectMonthly(projectid, yyyyMM) {
     //http://localhost:9000/api/todos/monthly/45/201701
-    return axios.get(api_root + 'todos/monthly/' + projectid + '/' + yyyyMM);
+    return axios.get(config.api_root + 'todos/monthly/' + projectid + '/' + yyyyMM);
 }
 
 function todosMonthly(yyyyMM) {
     //http://localhost:9000/api/todos/monthly/201701
-    return axios.get(api_root + 'todos/monthly/' + yyyyMM);
+    return axios.get(config.api_root + 'todos/monthly/' + yyyyMM);
 }
 
 
 function todoSave(todo) {
 
-    return axios.post(api_root + 'todos', todo);
+    return axios.post(config.api_root + 'todos', todo);
 }
 
 function invoiceSave(invoiceid, 
@@ -64,35 +64,35 @@ function invoiceSave(invoiceid,
                 todos: todos
             }
 
-    return axios.post(api_root + 'invoices', save_invoice);
+    return axios.post(config.api_root + 'invoices', save_invoice);
 }
 
 
 function invoiceTodosSave(invoiceid, todos) {
 
-    return axios.post(api_root + 'invoiceentries', todos);
+    return axios.post(config.api_root + 'invoiceentries', todos);
 }
 
 
 function invoiceGetHeader(invoiceid) {
 
-    return axios.get(api_root + 'invoices/' + invoiceid + '/header');
+    return axios.get(config.api_root + 'invoices/' + invoiceid + '/header');
 }
 
 function invoiceGetTodos(invoiceid) {
 
-    return axios.get(api_root + 'invoices/' + invoiceid + '/todos');
+    return axios.get(config.api_root + 'invoices/' + invoiceid + '/todos');
 }
 
 function invoicesGetPaged(pageindex, pagesize) {
 
-    return axios.get( api_root + 'invoices/' + pageindex + '/' + pagesize );
+    return axios.get( config.api_root + 'invoices/' + pageindex + '/' + pagesize );
 }
 
 
 function todoDelete(tsentryid) {
 
-    return axios.delete(api_root + 'todos/' + tsentryid);
+    return axios.delete(config.api_root + 'todos/' + tsentryid);
 }
 
 
@@ -100,61 +100,61 @@ function ordersGetPaged(pageindex, pagesize, statuses)
 {
     if (!statuses || statuses.length == 0)
     {
-        return axios.get( api_root + 'orders/paged/' + pageindex + '/' + pagesize );
+        return axios.get( config.api_root + 'orders/paged/' + pageindex + '/' + pagesize );
     }
     else 
     {
         const status_arr = statuses.map((value) => value.StatusId );
         const status_str = status_arr.join(',');
-        return axios.get( api_root + 'orders/paged/' + pageindex + '/' + pagesize + '/' + status_str );
+        return axios.get( config.api_root + 'orders/paged/' + pageindex + '/' + pagesize + '/' + status_str );
     }
 }
 
 
 function orderGetById(orderid) 
 {
-    return axios.get( api_root + 'orders/getbyid/' + orderid);
+    return axios.get( config.api_root + 'orders/getbyid/' + orderid);
 }
 
 
 exports.orderGetByOrderNumber = (order_number) =>
 {
-    return axios.get( api_root + 'orders/getbynumber/' + order_number);
+    return axios.get( config.api_root + 'orders/getbynumber/' + order_number);
 }
 
 
 function getOrderStatuses() 
 {
-    return axios.get( api_root + 'orders/statuses' );
+    return axios.get( config.api_root + 'orders/statuses' );
 }
 
 
 exports.getDailyOrders = (selected_day) => 
 {
-    return axios.get( api_root + 'orders/daily/' + selected_day );
+    return axios.get( config.api_root + 'orders/daily/' + selected_day );
 }
 
 
 function orderSave(order) 
 {
-    return axios.put( api_root + 'orders', { order: order });
+    return axios.put( config.api_root + 'orders', { order: order });
 }
 
 function saveTrackingNumber(order_number, tracking_number) 
 {
-    return axios.post( api_root + 'orders/tracking', { order_number: order_number, tracking_number: tracking_number });
+    return axios.post( config.api_root + 'orders/tracking', { order_number: order_number, tracking_number: tracking_number });
 }
 
 
 function orderPrint(orderid)
 {
-    return axios.get( api_root + 'orders/pdf/orderid/' + orderid);
+    return axios.get( config.api_root + 'orders/pdf/orderid/' + orderid);
 }
 
 
 exports.login = (email, password) => {
 
-    return axios.post( api_root + 'users/login', { email: email, password: password });
+    return axios.post( config.api_root + 'users/login', { email: email, password: password });
 }
 
 
