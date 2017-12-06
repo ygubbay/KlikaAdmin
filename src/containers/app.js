@@ -10,6 +10,7 @@ import LoginPage from './login-page';
 import ViewOrdersPage from './view-orders-page';
 import TrackingPage from './tracking-page';
 import DailyOrdersPage from './daily-orders-page';
+import HotFoldersPage from './hot-folders-page';
 import EnsureLoggedInContainer from './EnsureLoggedInContainer';
 import { isLoggedIn } from '../utils';
 
@@ -40,6 +41,8 @@ class App extends React.Component {
                     <Route exact path="/tracking" component={TrackingPage} />
                     <Route exact path="/dailyjobs" component={DailyOrdersPage} />
                     <Route exact path="/orders" component={ViewOrdersPage}  />
+                    <Route exact path="/hotfolders" component={HotFoldersPage}  />
+                    
                     
                     
                 </div>

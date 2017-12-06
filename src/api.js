@@ -146,6 +146,12 @@ function saveTrackingNumber(order_number, tracking_number)
 }
 
 
+exports.ordersDailyPdf = (yyyymmdd)  =>
+{
+    return axios.get( config.api_root + 'orders/pdf/daily/' + yyyymmdd );
+}
+
+
 function orderPrint(orderid)
 {
     return axios.get( config.api_root + 'orders/pdf/orderid/' + orderid);

@@ -106,7 +106,7 @@ class ViewOrdersPage extends React.Component {
             const pdf_url = response.data.pdf;
             console.log('downloading:', pdf_url);
             this.setState({ pdf_print: pdf_url })
-            //downloadFile(pdf_url);
+            
             setTimeout(() => { downloadFile(this.state.pdf_print); }, 1000);
             
             

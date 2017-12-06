@@ -58,9 +58,12 @@ class Header extends React.Component {
                             <li role="presentation">
                                 <NavLink to="/login">Users</NavLink>
                             </li>
-                        <li role="presentation">
-                            <NavLink to="/login" onClick={this.onLogoutClick.bind(this)}>Logout</NavLink>
-                        </li>
+                            <li role="presentation">
+                                <NavLink to="/hotfolders">Hot Folders</NavLink>
+                            </li>
+                            <li role="presentation">
+                                <NavLink to="/login" onClick={this.onLogoutClick.bind(this)}>Logout</NavLink>
+                            </li>
                         </DropdownButton>
                     </ButtonGroup>
                 </div>
