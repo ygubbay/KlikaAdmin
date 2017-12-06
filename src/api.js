@@ -3,7 +3,7 @@ import axios from "axios";
 const config = require('../config.js');
 
 function projectsGetAll(customerid) {
-config.config.
+
     return axios.get(config.api_root + 'projects/' + customerid);    
 }
 

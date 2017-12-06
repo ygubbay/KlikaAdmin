@@ -51,6 +51,7 @@ class TrackingPage extends React.Component {
         if (nextProps.user.tracking_page_order)
         {
             this.setState({ tracking_page_order: nextProps.user.tracking_page_order }); 
+            this.TrackingNumberInput.focus();
         }
         
     }
@@ -61,10 +62,10 @@ class TrackingPage extends React.Component {
 
     onOrderNumberChange(event) {
 
+        
         const order_number = event.target.value;
         console.log('trackingnumber focus:', order_number);
         this.setState({order_number: order_number});
-        this.TrackingNumberInput.focus();
 
         // getOrder
         this.props.getTrackingPageOrder(order_number);
@@ -77,10 +78,25 @@ class TrackingPage extends React.Component {
         this.setState({tracking_number: tracking_number});
         console.log('onTrackingNumberChange', tracking_number);
 
-        //saveTrackingNumber
-        if (this.state.order_number && tracking_number) {
+        const last_change_time = new Date();
+        this.setState({ last_tracking_change: last_change_time })
+        setTimeout(() => { this.saveTrackingNumber(last_change_time) }, 1000);
+        
+    }
 
-            api.saveTrackingNumber(this.state.order_number, tracking_number).then((response) => {
+    saveTrackingNumber(last_change_time) 
+    {
+
+        // skip if chars received with timeout period
+        if (last_change_time != this.state.last_tracking_change)
+        {
+            return;
+        }
+
+        //saveTrackingNumber
+        if (this.state.order_number && this.state.tracking_number) {
+
+            api.saveTrackingNumber(this.state.order_number, this.state.tracking_number).then((response) => {
 
             this.props.history.push('/orders');
             console.log('onTrackingNumberChange:');
@@ -91,6 +107,7 @@ class TrackingPage extends React.Component {
         });
         }
     }
+
 
 
     render() {
@@ -114,7 +131,7 @@ class TrackingPage extends React.Component {
                         <label>Order Number:</label>
                       </div>
                       <div className="fld fld2">
-                        <input type="text" className="input-scan"  ref={(input) => { this.OrderNumberInput = input; }} onChange={this.onOrderNumberChange.bind(this)} />
+                        <input type="text" className="input-scan"  ref={(input) => { this.OrderNumberInput = input; }} onChange={this.onOrderNumberChange.bind(this)} disabled={this.state.tracking_page_order} />
                       </div>
                 </div>
 

@@ -62,7 +62,8 @@ export function getTrackingPageOrder(order_number) {
                 console.log('orderGetByOrderNumber1:');
                 console.dir(response);
                 
-                dispatch({type: "GET_TRACKINGPAGE_ORDER", payload: response.data});
+                const tracking_order = response.data.OrderId ? response.data: null;
+                dispatch({type: "GET_TRACKINGPAGE_ORDER", payload: tracking_order});
                 
             }).catch((err) => {
                 console.log('orderGetByOrderNumber2:');
