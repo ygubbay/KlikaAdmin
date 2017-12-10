@@ -4,17 +4,14 @@ import React from 'react';
 
 import * as api from '../api';
 
-//import InvoiceTable from '../components/invoice-table';
-import OrdersTable from '../components/orders-table';
-import StatusFilter from '../components/status-filter';
-import OrderView from '../components/order-view';
-
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import { Navbar, Button } from 'react-bootstrap';
 import Header from '../components/Header';
+import HotFoldersTable from '../components/hot-folders-table';
+import HotFoldersView from '../components/hot-folders-view';
 
 
 import Pager from 'rc-pager';
@@ -36,8 +33,7 @@ class HotFoldersPage extends React.Component {
             paging: {
                 total: 10,
                 current: 0
-            },
-            order_statuses: []
+            }
         }
   
     }
@@ -46,41 +42,77 @@ class HotFoldersPage extends React.Component {
 
         if (!this.props.user.login)
             this.props.history.push('/login');
-        this.getOrders(this.state.paging.current+1, this.state.pagesize);
+        this.getPrintCodes(this.state.paging.current+1, this.state.pagesize);
     }
 
 
+    handlePageChanged(page) {
+        
+        const paging = {...this.state.paging };
+        paging.current = page;
+        this.setState({ paging });
+        this.getPrintCodes(page+1, this.state.pagesize);
 
+    }
 
+    getPrintCodes(pageindex, pagesize) {
+        api.getPrintCodesPaged(pageindex, pagesize).then((response) => {
 
+            this.setState({ printcodes: response.data });
+        }).catch((err) => {
+            alert(err);
+        })
+    }
+
+    editPrintCode(printcode)
+    {
+        console.log('editPrintCode', printcode);
+        this.setState({ single_view: true, single_printcode: printcode });        
+    }
+
+    savePrintCode(printcode) 
+    {
+        api.savePrintCode(printcode).then((response) => {
+
+            this.getPrintCodes(this.state.paging.current+1, this.state.pagesize);
+        })
+        this.setState( { single_view: false, single_printcode: null});
+    }
+
+    cancelPrintCode() 
+    {
+        this.setState( { single_view: false, single_printcode: null});
+    }
 
     render() {
 
-        let page = <div></div>;
+        var display;
         
         if (!this.state.single_view) {
-            page =  <div>
-                        <HotFoldersTable printcodes={this.state.printcodes} editHotFolderClick={(printcode_id) => this.openOrder(orderid)} printClick={(orderid) => this.printOrder(orderid) } />
+            display =  (<div>
 
-                        <Pager 
-                            total = {this.state.paging.total} 
-                            current={this.state.paging.current}
-                            onSkipTo={this.handlePageChanged.bind(this)}
-                            />
-                    </div>
+                            <h2>Hot folders</h2>                
+                            <HotFoldersTable printcodes={this.state.printcodes} editClick={(printcode) => {this.editPrintCode(printcode)} } />
+                            <Pager 
+                                total = {this.state.paging.total} 
+                                current={this.state.paging.current}
+                                onSkipTo={this.handlePageChanged.bind(this)}
+                                />
+                        </div>);
         }
         else {
-            page = <div>
-                        <HotFolderView printcode={this.state.single_printcode} />
-                    </div>
+            display = (<div>
+                        <HotFoldersView printcode={this.state.single_printcode} 
+                                        saveClick={(printcode) => {this.savePrintCode(printcode)}}
+                                        cancelClick={() => {this.cancelPrintCode()}} />
+                    </div>);
         }        
         return (
 
             <div className="ts-page">
                 
                 <Header />
-                <h2>Hot folders</h2>
-                {page}
+                {display}
             </div>
         );
     }
