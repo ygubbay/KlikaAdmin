@@ -28,11 +28,14 @@ export default class HotFoldersTable extends React.Component {
                                 <div key={'12'} className="tbl-col-hdr col-hot-2">
                                     Name
                                 </div>
-                                <div key={'13'} className="tbl-col-hdr col-hot-3">
-                                    Hot folder
+                                <div key={'19'} className="tbl-col-hdr col-hot-3">
+                                    Book Hot folder
+                                </div>
+                                <div key={'13'} className="tbl-col-hdr col-hot-4">
+                                    Cover Hot folder
                                 </div>
                                
-                                <div key={'18'} className="tbl-col-hdr col-hot-4">
+                                <div key={'18'} className="tbl-col-hdr col-hot-5">
                                     Edit
                                 </div>
                                
@@ -43,7 +46,7 @@ export default class HotFoldersTable extends React.Component {
         this.props.printcodes.map((printcode) => {
 
             var row_class = { true: "row-todo", true: "alert-row" };
-            var row = (<div key={printcode.id} className= { "row-todo" } > 
+            var row = (<div key={printcode.id} className= { "row-todo" + (printcode.hot_folder_book == null || printcode.hot_folder_book == '' ? " alert-row": "") } > 
                             
                             <div className="tbl-col col-hot-1">
                                 { printcode.id }
@@ -52,11 +55,14 @@ export default class HotFoldersTable extends React.Component {
                                 { printcode.name }
                             </div>
                             <div className="tbl-col col-hot-3">
-                                { printcode.hot_folder }
+                                { printcode.hot_folder_book }
+                            </div>
+                            <div className="tbl-col col-hot-4">
+                                { printcode.hot_folder_cover }
                             </div>
                             
 
-                            <div className="tbl-col col-hot-4">
+                            <div className="tbl-col col-hot-5">
                                 <Button bsStyle="primary" onClick={this.onEditClick.bind(this, printcode)}>Edit</Button>
                             </div>
                            
