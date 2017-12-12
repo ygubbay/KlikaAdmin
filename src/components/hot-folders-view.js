@@ -74,7 +74,7 @@ export default class HotFoldersView extends React.Component {
                 </div>
                 <div className="field-row">
                     <div className="fld fld1">Book Hot folder:</div>
-                    <div className="fld fld2"><input type="text" value={print_code.hot_folder_book} onChange={this.onBookHotFolderChange.bind(this)} /></div>
+                    <div className="fld fld2"><input type="text" className="hotfolder-text" value={print_code.hot_folder_book} onChange={this.onBookHotFolderChange.bind(this)} /></div>
                 </div>
                 <div className="field-row">
                     <div className="fld fld1">Is Cover Hot folder:</div>
@@ -83,7 +83,7 @@ export default class HotFoldersView extends React.Component {
 
                 <div className="field-row">
                     <div className="fld fld1">Cover Hot folder:</div>
-                    <div className="fld fld2"><input type="text" disabled={print_code.is_cover != 1} value={print_code.hot_folder_cover} onChange={this.onCoverHotFolderChange.bind(this)} /></div>
+                    <div className="fld fld2"><input type="text" className="hotfolder-text" disabled={print_code.is_cover != 1} value={print_code.hot_folder_cover} onChange={this.onCoverHotFolderChange.bind(this)} /></div>
                 </div>
                 <div className="field-row" style={ {marginTop: "15px" }}>
                     <Button bsStyle="success" onClick={this.onSaveClick.bind(this)}>Save</Button>&nbsp;&nbsp;
