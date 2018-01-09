@@ -1,6 +1,12 @@
 import axios from "axios";
 
-const config = require('../config.js');
+//const config = require('../config.js');
+let config;
+
+if (DEVELOPMENT) 
+    config = require('../config.js');
+else 
+    config = require('../config.production.js');
 
 
 function ordersGetPaged(pageindex, pagesize, statuses) 
