@@ -149,6 +149,26 @@ class ViewOrdersPage extends React.Component {
         this.refreshOrders( paging );
     }
 
+    onFindOrderChanged(event) {
+
+        const order_number = event.target.value;
+        if (order_number && order_number.length > 7) 
+        {
+            console.log('find order:', order_number);
+            api.orderGetByOrderNumber(order_number).then((response) => {
+
+                if (response.data.OrderNumber) {
+
+                    this.openOrder(response.data.OrderId);                    
+                }
+            }).catch((err) => {
+
+                console.dir(err);
+                alert(err);
+            });
+        }
+    }
+
 
 
 
@@ -172,7 +192,14 @@ class ViewOrdersPage extends React.Component {
                 
                 <Header />
                 <h2>Orders</h2>
+
+                <div style={{textAlign: "right", marginBottom: "10px", direction: "rtl" }}>
+                    <div className="find-order-label">חפש</div>
+                    <div className="find-order-inline">&nbsp;<input type="text" className="find-order-input" onChange={this.onFindOrderChanged.bind(this)} /></div>
+                </div>
                 <div style={{textAlign: "right", marginBottom: "10px"}}><StatusFilter handleStatusListChange={(status_list) => this.handleStatusListChange(status_list) } /></div>
+
+                <hr />
                 <OrdersTable orders={this.state.orders} orderClick={(orderid) => this.openOrder(orderid)} printClick={(orderid) => this.printOrder(orderid) } />
 
                 <Pager 

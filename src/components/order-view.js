@@ -97,7 +97,7 @@ export default class OrderView extends React.Component {
             order.OrderStatus ? 
             <div className="page order-view">
                 
-                <h2>Order - {order.OrderNumber}</h2>
+                <h2 className="order-headline">Order - {order.OrderNumber}</h2>
                 <div className="row">
                     <div className="col-sm-6">
                         
