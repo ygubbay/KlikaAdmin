@@ -70,25 +70,33 @@ class ViewOrdersPage extends React.Component {
     }
 
     getOrders(pageindex, pagesize, order_statuses) {
+
+        console.log('getOrders: ', pageindex, pagesize);
         api.ordersGetPaged(pageindex, pagesize, order_statuses).then((response) => {
 
-            this.setState({ orders: response.data, status_list: order_statuses });
+            console.log('getOrders response:', response);
+            let paging = this.state.paging;
+            paging.total = parseInt(response.data.count / this.state.pagesize);
+            this.setState({ orders: response.data.rows, status_list: order_statuses, paging: paging });
         }).catch((err) => {
             alert(err);
         })
     }
 
-    refreshOrders() {
+    refreshOrders(paging) {
 
+        console.log('refreshOrders: ', JSON.stringify(this.state.paging));
         const status_list = this.state.status_list;
+
+        const pager = paging ? paging: this.state.paging;
 
         if (status_list && status_list.length > 0)
         {
-            this.getOrders(this.state.paging.current+1, this.state.pagesize, status_list);
+            this.getOrders(pager.current+1, this.state.pagesize, status_list);
         }
         else 
         {
-            this.getOrders(this.state.paging.current+1, this.state.pagesize);
+            this.getOrders(pager.current+1, this.state.pagesize);
         }    
     }
 
@@ -133,10 +141,12 @@ class ViewOrdersPage extends React.Component {
 
     handlePageChanged(page) {
         
+        console.log('handlePageChanged: ', page);
         const paging = {...this.state.paging };
         paging.current = page;
         this.setState({ paging });
-        this.getOrders(page+1, this.state.pagesize);
+        //this.getOrders(page+1, this.state.pagesize);
+        this.refreshOrders( paging );
     }
 
 
