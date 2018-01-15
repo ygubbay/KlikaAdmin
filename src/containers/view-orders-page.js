@@ -81,6 +81,10 @@ class ViewOrdersPage extends React.Component {
             console.log('getOrders response:', response);
             let paging = this.state.paging;
             paging.total = parseInt(response.data.count / this.state.pagesize);
+
+            var add_page = response.data.count - (parseInt(response.data.count / this.state.pagesize)) > 0 ? 1: 0;
+            paging.total = parseInt(response.data.count / this.state.pagesize) + add_page;
+
             paging.all_rows = response.data.count;
             this.setState({ orders: response.data.rows, status_list: order_statuses, paging: paging });
         }).catch((err) => {

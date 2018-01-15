@@ -61,7 +61,9 @@ class HotFoldersPage extends React.Component {
 
             console.log('getPrintCodesPaged response:', response);
             let paging = this.state.paging;
-            paging.total = parseInt(response.data.count / this.state.pagesize);
+
+            var add_page = response.data.count - (parseInt(response.data.count / this.state.pagesize)) > 0 ? 1: 0;
+            paging.total = parseInt(response.data.count / this.state.pagesize) + add_page;
             paging.all_rows = response.data.count;
             this.setState({ printcodes: response.data.rows, paging: paging });
 
