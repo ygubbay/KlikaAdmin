@@ -77,6 +77,15 @@ export default class OrderView extends React.Component {
         
     }
 
+
+    onPrintClick(order) {
+        const orderid = order.orderid;
+
+        console.log('onPrintClick:');
+        this.props.printClick(this.state.order);
+        
+    }
+
     onCancelClick() {
         this.props.cancelClick();
     }
@@ -179,6 +188,9 @@ export default class OrderView extends React.Component {
                
                
                 <div style={{display: this.props.view_only ? 'none': 'block'}}>
+
+                    <Button bsStyle="primary" onClick={this.onPrintClick.bind(this, this.state.order)}>Print</Button>&nbsp;
+                    
                     <Button bsStyle="success" onClick={this.onSaveClick.bind(this, this.state.order)}>Save</Button>&nbsp;
                     <Button bsStyle="danger" onClick={this.onCancelClick.bind(this)}>Cancel</Button>
                     

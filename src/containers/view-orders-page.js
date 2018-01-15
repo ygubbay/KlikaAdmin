@@ -35,7 +35,8 @@ class ViewOrdersPage extends React.Component {
             single_invoiceid: 0,  // dummy
             paging: {
                 total: 10,
-                current: 0
+                current: 0,
+                all_rows: 0
             },
             order_statuses: []
         }
@@ -57,15 +58,18 @@ class ViewOrdersPage extends React.Component {
 
         console.log('status_list:');
         console.dir(status_list);
+        
+        let paging = this.state.paging;
+        paging.current = 0;
         if (status_list && status_list.length > 0)
         {
-            this.setState({ status_list: status_list });
-            this.getOrders(this.state.paging.current+1, this.state.pagesize, status_list);
+            this.setState({ status_list: status_list, paging: paging });
+            this.getOrders(1, this.state.pagesize, status_list);
         }
         else 
         {
-            this.setState({ status_list: [] });
-            this.getOrders(this.state.paging.current+1, this.state.pagesize);
+            this.setState({ status_list: [], paging: paging });
+            this.getOrders(1, this.state.pagesize);
         }
     }
 
@@ -77,6 +81,7 @@ class ViewOrdersPage extends React.Component {
             console.log('getOrders response:', response);
             let paging = this.state.paging;
             paging.total = parseInt(response.data.count / this.state.pagesize);
+            paging.all_rows = response.data.count;
             this.setState({ orders: response.data.rows, status_list: order_statuses, paging: paging });
         }).catch((err) => {
             alert(err);
@@ -181,6 +186,7 @@ class ViewOrdersPage extends React.Component {
             display = (
            
                 <OrderView orderid={this.state.single_orderid} 
+                            printClick={ (order) => this.printOrder(order.OrderId)}
                             saveClick={ (order) => this.SaveOrderClick(order) }
                              cancelClick={ () => this.backToViewOrdersClick() } />
            );
@@ -202,11 +208,18 @@ class ViewOrdersPage extends React.Component {
                 <hr />
                 <OrdersTable orders={this.state.orders} orderClick={(orderid) => this.openOrder(orderid)} printClick={(orderid) => this.printOrder(orderid) } />
 
-                <Pager 
-                    total = {this.state.paging.total} 
-                    current={this.state.paging.current}
-                    onSkipTo={this.handlePageChanged.bind(this)}
-                    />
+                <div>
+                    <div style={{display: "inline"}}>
+                        <Pager total = {this.state.paging.total} 
+                                    current={this.state.paging.current}
+                                    onSkipTo={this.handlePageChanged.bind(this)} />
+                    </div>
+                    <div className="order-count-container">
+                        <div className="order-count-inner">{this.state.paging.all_rows > 0 ? this.state.paging.all_rows + ' records': ''}</div>
+
+                    </div>
+                </div>
+                
             </div>
             )
         }
