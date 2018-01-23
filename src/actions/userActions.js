@@ -70,6 +70,8 @@ export function changePassword(token, password)
 
     return (dispatch) => {
 
+        dispatch( { type: "CHANGEPASSWORD_START", payload: null } );
+
         api.changePassword(token, password)
             .then((response) => {
                 console.log('changePassword Response:');
@@ -78,7 +80,7 @@ export function changePassword(token, password)
                 if (response.data.is_error) 
                 {
                     console.log('changePassword error:');
-                    dispatch( { type: "CHANGEPASSWORD_FAIL", payload: "Error occurred during Change Password.  Please contact System Administrator."});
+                    dispatch( { type: "CHANGEPASSWORD_FAIL", payload: response.data});
 
                 }
                 else 

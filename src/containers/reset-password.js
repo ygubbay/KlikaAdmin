@@ -85,7 +85,7 @@ class ResetPasswordPage extends React.Component {
 
             <div className="reset-page">
                <form onSubmit={this.onSubmitClick.bind(this)}>
-               <div><h2>Studio Mor Reset Password</h2></div>
+               <div><h2>Studio Mor - Reset Password</h2></div>
                <div className="login-line">
                    <div className="email-label">Email</div>
                    <div className="email-input"><input type="email"  className="login-text" onChange={this.onEmailChange.bind(this)} value={this.state.name} /></div>

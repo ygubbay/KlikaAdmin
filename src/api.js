@@ -80,6 +80,10 @@ exports.resetPassword = (email) => {
     return axios.post( config.api_root + 'users/resetpassword', { email, email });
 }
 
+exports.getChangePassword = (token) => {
+
+    return axios.get( config.api_root + 'users/changepassword/' + token );
+}
 
 exports.changePassword = (token, password) => {
     return axios.post( config.api_root + 'users/changepassword', { token: token, password: password });

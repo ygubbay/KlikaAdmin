@@ -29,7 +29,7 @@ const userReducer = (state=initialUser, action) => {
         case "RESETPASSWORD_START":
             var new_state = _.assign({}, state, { waiting_for_server: false, reset_password: { is_executed: false }});
             return new_state;
-        break;
+
         case "RESETPASSWORD_FAIL":
             var new_state = _.assign({}, state, { waiting_for_server: false, reset_password: { is_executed: true, is_error: true, error_message: action.payload.error_message } });
             return new_state;
@@ -38,12 +38,17 @@ const userReducer = (state=initialUser, action) => {
             var new_state = _.assign({}, state, { waiting_for_server: false, reset_password: { is_executed: true, is_error: false }});
             return new_state;
 
+        case "CHANGEPASSWORD_START":
+            var new_state = _.assign({}, state, { waiting_for_server: false, forgot_password: { is_executed: false }});
+            return new_state;
+
+
         case "CHANGEPASSWORD_FAIL":
-            var new_state = _.assign({}, state, { waiting_for_server: false, login: null });
+            var new_state = _.assign({}, state, { waiting_for_server: false, forgot_password: { is_executed: true, is_error: true, error_message: action.payload.error_message } });
             return new_state;
             
         case "CHANGEPASSWORD_OK":
-            var new_state = _.assign({}, state, { waiting_for_server: false, login: action.payload.user});
+            var new_state = _.assign({}, state, { waiting_for_server: false, forgot_password: { is_executed: true, is_error: false }});
             return new_state;
 
         case "LOGOUT":
