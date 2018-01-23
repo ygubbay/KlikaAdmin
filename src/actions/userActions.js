@@ -32,6 +32,68 @@ export function loginUser(username, password) {
     }
 }
 
+export function resetPassword(email) 
+{
+
+    return (dispatch) => {
+
+        dispatch( { type: "RESETPASSWORD_START", payload: null } );
+
+        api.resetPassword(email)
+            .then((response) => {
+                console.log('resetPassword Response:');
+                console.dir(response);
+
+                if (response.data.is_error) 
+                {
+                    console.log('resetPassword error:');
+                    dispatch( { type: "RESETPASSWORD_FAIL", payload: response.data});
+
+                }
+                else 
+                {
+                    console.log('resetPassword success:');
+                    dispatch({type: "RESETPASSWORD_OK", payload: response.data});                }
+            })
+            .catch((err) => {
+                console.log('resetPassword failure:');
+                console.dir(err);
+                dispatch( { type: "RESETPASSWORD_FAIL", payload: "Failure occurred during Change Password.  Please contact System Administrator."});
+            });
+    }
+}
+
+
+export function changePassword(token, password) 
+{
+    console.log('changePassword:', token, password);
+
+    return (dispatch) => {
+
+        api.changePassword(token, password)
+            .then((response) => {
+                console.log('changePassword Response:');
+                console.dir(response);
+
+                if (response.data.is_error) 
+                {
+                    console.log('changePassword error:');
+                    dispatch( { type: "CHANGEPASSWORD_FAIL", payload: "Error occurred during Change Password.  Please contact System Administrator."});
+
+                }
+                else 
+                {
+                    console.log('changePassword success:');
+                    dispatch({type: "CHANGEPASSWORD_OK", payload: response.data});                }
+            })
+            .catch((err) => {
+                console.log('changePassword failure:');
+                console.dir(err);
+                dispatch( { type: "CHANGEPASSWORD_FAIL", payload: "Failure occurred during Change Password.  Please contact System Administrator."});
+            });
+    }
+}
+
 
 export function logout() {
     return {

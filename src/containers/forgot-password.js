@@ -5,20 +5,21 @@ import React from 'react';
 import * as utils from '../utils';
 
 import { Alert, Button } from 'react-bootstrap';
-import { loginUser, dismissAlerts } from '../actions/userActions';
+import { changePassword, dismissAlerts } from '../actions/userActions';
 
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+require('../styles/forgot-password.less');
 
-
-class LoginPage extends React.Component {
+class ForgotPasswordPage extends React.Component {
   constructor(props) {
         super(props);
 
         this.state = {
-            email: '',
-            password: ''
+            token: this.props.token,
+            password1: '',
+            password2: ''
         }
         
     }
@@ -26,23 +27,17 @@ class LoginPage extends React.Component {
     componentWillMount() {
 
         // need to do a logout here...
-
-        
-        const email = utils.getCookie('email');
-
-        if (email != undefined)
-        {
-            this.setState({ email: email });
-        }
+        console.log('token is: ', this.props.token);
+        this.state.name = 'Hey there';
     }
 
    shouldComponentUpdate(nextProps, nextState) {
     return JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
    }
 
-    onLoginButtonClick(event) {
+    onSubmitClick(event) {
 
-        this.props.loginUser(this.state.email, this.state.password);
+        this.props.changePassword(this.state.token, this.state.password1);
         event.preventDefault();
     }
 
@@ -82,22 +77,26 @@ class LoginPage extends React.Component {
                     </Alert>: '';
         return (
 
-            <div className="login-page">
-               <form onSubmit={this.onLoginButtonClick.bind(this)}>
-               <div><h2>Studio Mor Login</h2></div>
+            <div className="forgot-page">
+               <form onSubmit={this.onSubmitClick.bind(this)}>
+               <div><h2>Studio Mor Change Password</h2></div>
                <div className="login-line">
-                   <div>Email</div>
-                   <div><input type="email"  className="login-text" onChange={this.onEmailChange.bind(this)} value={this.state.email} /></div>
+                   <div>Name</div>
+                   <div type="email"  className="login-text" onChange={this.onEmailChange.bind(this)}  >value={this.state.name}</div>
                </div>
                <div className="login-line">
                    <div>Password</div>
-                   <div><input type="password"  className="login-text" onChange={this.onPasswordChange.bind(this)}  value={this.state.password} /></div>
+                   <div><input type="password"  className="login-text" onChange={this.onPasswordChange.bind(this)}  value={this.state.password1} /></div>
+               </div>
+               <div className="login-line">
+                   <div>Password</div>
+                   <div><input type="password"  className="login-text" onChange={this.onPasswordChange.bind(this)}  value={this.state.password2} /></div>
                </div>
 
                <div style={{marginTop: '20px'}}>
                    <Button type="submit"  bsStyle="primary" style={{width: '225px', height: '45px'}}   disabled={!is_input_valid}>Login</Button>
                 </div>
-               <div><a className="forgot-password" href="resetpassword">Forgot password</a></div>
+               <div><a className="forgot-password" href="Forgot password">Forgot password</a></div>
                <div style={{marginTop: '20px'}}>
                    {alert_element}
                </div>
@@ -111,7 +110,7 @@ class LoginPage extends React.Component {
           
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    loginUser,
+    changePassword,
     dismissAlerts
   }, dispatch);
 }
@@ -123,4 +122,4 @@ const mapStateToProps = (state) => {
 
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordPage);

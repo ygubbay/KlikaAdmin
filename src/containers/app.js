@@ -7,6 +7,8 @@ import {
 } from 'react-router-dom'
 import Header from '../components/Header';
 import LoginPage from './login-page';
+import ResetPasswordPage from './reset-password';
+import ForgotPasswordPage from './forgot-password';
 import ViewOrdersPage from './view-orders-page';
 import TrackingPage from './tracking-page';
 import DailyOrdersPage from './daily-orders-page';
@@ -36,8 +38,9 @@ class App extends React.Component {
                     <Route exact path="/" component={LoginPage} />         
                         
                     <Route exact path="/login" component={LoginPage} />
+                    <Route exact path="/resetpassword" component={ResetPasswordPage} />
 
-                    
+                    <Route path="/forgotpassword/:token" component={ForgotPasswordPage} />
                     <Route exact path="/tracking" component={TrackingPage} />
                     <Route exact path="/dailyjobs" component={DailyOrdersPage} />
                     <Route exact path="/orders" component={ViewOrdersPage}  />

@@ -76,6 +76,15 @@ exports.login = (email, password) => {
     return axios.post( config.api_root + 'users/login', { email: email, password: password });
 }
 
+exports.resetPassword = (email) => {
+    return axios.post( config.api_root + 'users/resetpassword', { email, email });
+}
+
+
+exports.changePassword = (token, password) => {
+    return axios.post( config.api_root + 'users/changepassword', { token: token, password: password });
+}
+
 exports.getPrintCodesPaged = (page_index, page_size) =>
 {
     return axios.get( config.api_root + 'printcodes/' + page_index + '/' + page_size );
