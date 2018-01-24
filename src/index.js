@@ -5,8 +5,8 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 require('./styles/ts-styles.less');
-
 require('../node_modules/rc-pager/assets/bootstrap.css')
+require('./images/favicon.ico');
 
 ReactDOM.render(
 <Provider store={store}><App />

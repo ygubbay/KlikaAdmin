@@ -16,7 +16,7 @@ var entry = PRODUCTION ? ['./src/index.js']: ['./src/index.js',
 var plugins = PRODUCTION ? [
     new webpack.optimize.UglifyJsPlugin(),
     new ExtractTextPlugin('style-[contenthash:10].css'),
-    new htmlWebpackPlugin({ template: 'index-template.html', })
+    new htmlWebpackPlugin({ template: 'index-template.html', favicon: 'src/images/favicon.ico' })
 ]: [new webpack.HotModuleReplacementPlugin()];
 
 
@@ -67,6 +67,10 @@ module.exports = {
             test: /\.(png|jpg|gif)$/,
             loaders: ['url-loader?limit=10000&name=images/[hash:12].[ext]'],
             exclude: '/node_modules/'
+        },
+        {
+          test: /\.(ico)$/i,                // favicon
+          loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
         },
         {
             test: /\.(css)$/,

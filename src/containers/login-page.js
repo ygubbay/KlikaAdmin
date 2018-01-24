@@ -4,6 +4,7 @@ import React from 'react';
 
 import * as utils from '../utils';
 
+import { Link } from 'react-router-dom';
 import { Alert, Button } from 'react-bootstrap';
 import { loginUser, dismissAlerts } from '../actions/userActions';
 
@@ -97,7 +98,7 @@ class LoginPage extends React.Component {
                <div style={{marginTop: '20px'}}>
                    <Button type="submit"  bsStyle="primary" style={{width: '225px', height: '45px'}}   disabled={!is_input_valid}>Login</Button>
                 </div>
-               <div><a className="forgot-password" href="resetpassword">Forgot password</a></div>
+               <div><Link className="forgot-password" to="/resetpassword">Forgot password</Link></div>
                <div style={{marginTop: '20px'}}>
                    {alert_element}
                </div>
