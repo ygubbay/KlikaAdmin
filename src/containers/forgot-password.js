@@ -6,7 +6,7 @@ import * as utils from '../utils';
 import * as api from '../api';
 
 import { Alert, Button } from 'react-bootstrap';
-import { changePassword, dismissAlerts } from '../actions/userActions';
+
 
 
 import { connect } from 'react-redux';
@@ -27,6 +27,10 @@ class ForgotPasswordPage extends React.Component {
         }
         
     }
+
+    SUCCESS_MESSAGE = 'Password was changed successfully.  In a few seconds, you will be redirected to the Login again.'
+    FAILURE_MESSAGE = "Failure occurred during Change Password.  Please contact System Administrator.";
+    LOGIN_REDIRECT_DELAY = 10000;
 
     componentWillMount() {
 
@@ -56,53 +60,59 @@ class ForgotPasswordPage extends React.Component {
 
     onSubmitClick(event) {
 
-        this.props.changePassword(this.state.token, this.state.password1);
+        //this.props.changePassword(this.state.token, this.state.password1);
+        
+        api.changePassword(this.state.token, this.state.password1)
+            .then((response) => {
+                console.log('changePassword Response:');
+                console.dir(response);
+
+                let alerts = [];
+                if (response.data.is_error) 
+                {
+                    console.log('changePassword error:');
+                    alerts = [ { type: 'danger', msg: forgot_password.error_message }]
+                }
+                else {
+                    alerts = [ { type: 'success', msg: this.SUCCESS_MESSAGE }];
+                    console.log('changePassword success:');
+                }
+                    
+                this.setState({
+                    server_result: response.data,
+                    alerts: alerts
+                });
+
+                setTimeout(() => { this.props.history.push('/login'); }, this.LOGIN_REDIRECT_DELAY);
+            })
+            .catch((err) => {
+                console.log('changePassword failure:');
+                console.dir(err);
+                let alerts = [ { type: 'danger', msg: this.FAILURE_MESSAGE }];
+
+                this.setState({
+                    server_result: err,
+                    alerts: alerts
+                });
+
+                setTimeout(() => { this.props.history.push('/login'); }, this.LOGIN_REDIRECT_DELAY);
+                
+            });
         event.preventDefault();
     }
 
    onPassword1Change(event) {
-       this.props.dismissAlerts();
+       this.onAlertDismiss();
        this.setState({password1: event.target.value});
    }
    onPassword2Change(event) {
-       this.props.dismissAlerts();
+       this.onAlertDismiss();
        this.setState({password2: event.target.value});
    }
 
    onAlertDismiss() {
-       this.props.dismissAlerts();
+       this.setState({ alerts: [] } );
    }
-
-    componentWillReceiveProps(nextProps) 
-    {
-        
-        
-        if (nextProps.user.forgot_password && nextProps.user.forgot_password.is_executed)
-        {
-            console.log('nextProps:');
-            console.dir(nextProps);
-            let alerts = [];
-            const forgot_password = nextProps.user.forgot_password;
-            if (forgot_password.is_error) {
-                
-                alerts = [ { type: 'danger', msg: forgot_password.error_message }]
-            }
-            else {
-                alerts = [ { type: 'success', msg: 'Password was changed successfully.  In a few seconds, you will be redirected to the Login again.' }];
-
-                
-            }
-            this.setState({
-                server_result: forgot_password,
-                alerts: alerts
-            });
-
-            setTimeout(() => { this.props.history.push('/login'); }, 6000);
-        }
-
-    }
-
-
 
 
     render() {
@@ -150,8 +160,7 @@ class ForgotPasswordPage extends React.Component {
           
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    changePassword,
-    dismissAlerts
+    
   }, dispatch);
 }
 

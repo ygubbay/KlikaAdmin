@@ -3,9 +3,9 @@ import _ from 'lodash';
 import React from 'react';
 
 import * as utils from '../utils';
+import * as api from '../api';
 
 import { Alert, Button } from 'react-bootstrap';
-import { resetPassword, dismissAlerts } from '../actions/userActions';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -23,49 +23,65 @@ class ResetPasswordPage extends React.Component {
     }
 
 
-    
+    SUCCESS_MESSAGE = "Please check your email account for link to Change Password.";
+    FAILURE_MESSAGE = "Failure occurred during Change Password.  Please contact System Administrator.";
+    LOGIN_REDIRECT_DELAY = 10000;
     
     onSubmitClick(event) {
 
-        this.props.resetPassword(this.state.email);
+        //this.props.resetPassword(this.state.email);
+        api.resetPassword(this.state.email).then((response) => {
+
+            console.log('resetPassword Response:');
+            console.dir(response);
+
+            let alerts = [];
+            if (response.data.is_error) 
+            {
+                console.log('resetPassword error:');
+                alerts = [ { type: 'danger', msg: response.data.error_message }]
+                //dispatch( { type: "RESETPASSWORD_FAIL", payload: response.data});
+
+            }
+            else 
+            {
+                console.log('resetPassword success:');
+                alerts = [ { type: 'success', msg: this.SUCCESS_MESSAGE }]
+
+//                dispatch({type: "RESETPASSWORD_OK", payload: response.data});                
+            }
+
+            this.setState({
+                server_result: response.data,
+                alerts: alerts
+            });
+
+            setTimeout(() => { this.props.history.push('/login'); }, this.LOGIN_REDIRECT_DELAY);
+
+        }).catch((err) => {
+            console.log('resetPassword failure:');
+            console.dir(err);
+            let alerts = [ { type: 'danger', msg: this.FAILURE_MESSAGE }]
+
+            this.setState({
+                server_result: err,
+                alerts: alerts
+            });
+
+            setTimeout(() => { this.props.history.push('/login'); }, this.LOGIN_REDIRECT_DELAY);
+
+        });
         event.preventDefault();
     }
 
    onEmailChange(event) {
-       this.props.dismissAlerts();
+       //this.props.dismissAlerts();
        this.setState({email: event.target.value});
    }
 
-    componentWillReceiveProps(nextProps) {
-
-        
-        if (nextProps.user.reset_password && nextProps.user.reset_password.is_executed)
-        {
-            console.log('nextProps:');
-            console.dir(nextProps);
-            let alerts = [];
-            const reset_password = nextProps.user.reset_password;
-            if (reset_password.is_error) {
-                
-                alerts = [ { type: 'danger', msg: reset_password.error_message }]
-            }
-            else {
-                alerts = [ { type: 'success', msg: 'Please check your email account for link to Change Password.' }];
-
-                
-            }
-            this.setState({
-                server_result: reset_password,
-                alerts: alerts
-            });
-
-            setTimeout(() => { this.props.history.push('/login'); }, 6000);
-        }
-    }
-
 
    onAlertDismiss() {
-       this.props.dismissAlerts();
+       //this.props.dismissAlerts();
    }
 
    validateEmail(email) {
@@ -107,8 +123,7 @@ class ResetPasswordPage extends React.Component {
           
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    resetPassword,
-    dismissAlerts
+    
   }, dispatch);
 }
 
