@@ -64,6 +64,10 @@ module.exports = {
           exclude: '/node_modules/' 
         },
         {
+            test: /\.(config)$/, 
+            loader: 'file-loader?name=[name].[ext]'
+        },
+        {
             test: /\.(png|jpg|gif)$/,
             loaders: ['url-loader?limit=10000&name=images/[hash:12].[ext]'],
             exclude: '/node_modules/'
