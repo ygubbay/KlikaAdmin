@@ -24,6 +24,12 @@ function ordersGetPaged(pageindex, pagesize, statuses)
 }
 
 
+exports.usersGetPaged = (pageindex, pagesize) =>
+{
+    return axios.get( config.api_root + 'users/paged/' + pageindex + '/' + pagesize );
+}
+
+
 function orderGetById(orderid) 
 {
     return axios.get( config.api_root + 'orders/getbyid/' + orderid);

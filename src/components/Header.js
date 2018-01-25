@@ -56,7 +56,7 @@ class Header extends React.Component {
                         <NavLink className="btn btn-default" to="/dailyjobs">Daily Jobs</NavLink>
                         <DropdownButton title="Admin" id="bg-justified-dropdown">
                             <li role="presentation">
-                                <NavLink to="/login">Users</NavLink>
+                                <NavLink to="/users">Users</NavLink>
                             </li>
                             <li role="presentation">
                                 <NavLink to="/hotfolders">Hot Folders</NavLink>

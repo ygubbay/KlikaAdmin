@@ -73,6 +73,8 @@ class ViewOrdersPage extends React.Component {
         }
     }
 
+    
+
     getOrders(pageindex, pagesize, order_statuses) {
 
         console.log('getOrders: ', pageindex, pagesize);

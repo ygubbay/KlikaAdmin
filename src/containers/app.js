@@ -13,6 +13,7 @@ import ViewOrdersPage from './view-orders-page';
 import TrackingPage from './tracking-page';
 import DailyOrdersPage from './daily-orders-page';
 import HotFoldersPage from './hot-folders-page';
+import UsersPage from './users-page';
 import EnsureLoggedInContainer from './EnsureLoggedInContainer';
 import { isLoggedIn } from '../utils';
 
@@ -38,13 +39,14 @@ class App extends React.Component {
                     <Route exact path="/" component={LoginPage} />         
                         
                     <Route exact path="/login" component={LoginPage} />
-                    <Route path="/resetpassword" component={ResetPasswordPage} />
+                    <Route exact path="/resetpassword" component={ResetPasswordPage} />
 
                     <Route path="/forgotpassword/:token" component={ForgotPasswordPage} />
                     <Route exact path="/tracking" component={TrackingPage} />
                     <Route exact path="/dailyjobs" component={DailyOrdersPage} />
                     <Route exact path="/orders" component={ViewOrdersPage}  />
                     <Route exact path="/hotfolders" component={HotFoldersPage}  />
+                    <Route exact path="/users" component={UsersPage}  />
                     
                     
                     
