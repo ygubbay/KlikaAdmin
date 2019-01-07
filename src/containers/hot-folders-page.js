@@ -40,9 +40,9 @@ class HotFoldersPage extends React.Component {
 
     componentWillMount() {
 
-        if (!this.props.user.login)
-            this.props.history.push('/login');
-        this.getPrintCodes(this.state.paging.current+1, this.state.pagesize);
+        //if (!this.props.user.login)
+          //  this.props.history.push('/login');
+        //this.getPrintCodes(this.state.paging.current+1, this.state.pagesize);
     }
 
 

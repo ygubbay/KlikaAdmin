@@ -52,12 +52,6 @@ class Header extends React.Component {
             <NavLink className="btn btn-default" to="/invoicepage">
               Invoice
             </NavLink>
-            <NavLink className="btn btn-default" to="/TmpInvoice">
-              Tmp Invoice
-            </NavLink>
-            <NavLink className="btn btn-default" to="/tmpproducts">
-              Tmp products
-            </NavLink>
 
             <DropdownButton title="Admin" id="bg-justified-dropdown">
               <li role="presentation">
