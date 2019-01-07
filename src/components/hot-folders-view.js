@@ -34,9 +34,13 @@ export default class HotFoldersView extends React.Component {
     if (pc.is_cover != 1) {
       pc.hot_folder_cover = "";
     }
-    console.log("What the F is print_code: ");
+    // Add price fields to print_code
+    this.addPricesToPC();
+
+    console.log("What the state: ");
     console.log(this.state);
     console.log("ok");
+
     this.props.saveClick(this.state.print_code);
   }
 
@@ -71,6 +75,20 @@ export default class HotFoldersView extends React.Component {
     let new_state = this.state;
     new_state[name] = value;
     this.setState(new_state);
+  }
+
+  addPricesToPC() {
+    let pc = this.state.print_code;
+
+    pc.base_price = this.state.base_price;
+    pc.base_pages = this.state.base_pages;
+    pc.addon_price = this.state.addon_price;
+    pc.addon_pages = this.state.addon_pages;
+    pc.box_price = this.state.box_price;
+    pc.copies_per_box = this.state.copies_per_box;
+    pc.packaging_price = this.state.packaging_price;
+
+    this.setState({ print_code: pc });
   }
 
   isValidPrice(price_field, price_value) {
