@@ -1,201 +1,163 @@
-import _ from "lodash";
 import React from "react";
 
-import * as utils from "../utils";
-
-import { Link } from "react-router-dom";
-import { Alert, Button } from "react-bootstrap";
-import { loginUser, dismissAlerts } from "../actions/userActions";
-
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+// For month and year
+import YearMonthSelector from "react-year-month-selector";
 
 class InvoicePage extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      email: "",
-      password: ""
-    };
+    this.state = { open: true };
+    //this.state = { date: null, selectedDate: "2012-11-15" };
   }
 
-  componentWillMount() {
-    // need to do a logout here...
+  // componentWillMount() {
+  //    need to do a logout here...
+  //    const email = utils.getCookie("email");
+  //    if (email != undefined) {
+  //      this.setState({ email: email });
+  //    }
+  // }
 
-    const email = utils.getCookie("email");
-
-    if (email != undefined) {
-      this.setState({ email: email });
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
-      JSON.stringify(this.state) !== JSON.stringify(nextState)
-    );
-  }
-
-  onLoginButtonClick(event) {
-    this.props.loginUser(this.state.email, this.state.password);
-    event.preventDefault();
-  }
-
-  onEmailChange(event) {
-    this.props.dismissAlerts();
-    this.setState({ email: event.target.value });
-  }
-
-  onPasswordChange(event) {
-    this.props.dismissAlerts();
-    this.setState({ password: event.target.value });
-  }
-
-  onAlertDismiss() {
-    this.props.dismissAlerts();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.user.login) {
-      utils.setCookie("email", this.state.email);
-      this.props.history.push("/orders");
-    }
-  }
-
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return (
+  //     JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
+  //     JSON.stringify(this.state) !== JSON.stringify(nextState)
+  //   );
+  // }
   render() {
-    const is_input_valid =
-      this.state.email &&
-      this.state.email.length > 5 &&
-      this.state.password &&
-      this.state.password.length > 4;
-
-    const alert_element =
-      this.props.user &&
-      this.props.user.alerts &&
-      this.props.user.alerts.length ? (
-        <Alert bsStyle="danger" onDismiss={this.onAlertDismiss.bind(this)}>
-          {this.props.user.alerts[0].msg}
-        </Alert>
-      ) : (
-        ""
-      );
     return (
-      <div className="login-page">
-        <div>month:</div>
-        <div>year:</div>
-        <div>
-          <Button>Create Invoice</Button>
-        </div>
-        <form onSubmit={this.onLoginButtonClick.bind(this)}>
-          <div>
-            <h2>invoice page eeeeeeee</h2>
-          </div>
-          <div className="login-line">
-            <div>Email</div>
-            <div>
-              <input
-                type="email"
-                className="login-text"
-                onChange={this.onEmailChange.bind(this)}
-                value={this.state.email}
-              />
-            </div>
-          </div>
-          <div className="login-line">
-            <div>Password</div>
-            <div>
-              <input
-                type="password"
-                className="login-text"
-                onChange={this.onPasswordChange.bind(this)}
-                value={this.state.password}
-              />
-            </div>
-          </div>
-
-          <div style={{ marginTop: "20px" }}>
-            <Button
-              type="submit"
-              bsStyle="primary"
-              style={{ width: "225px", height: "45px" }}
-              disabled={!is_input_valid}
-            >
-              Login
-            </Button>
-          </div>
-          <div>
-            <Link className="forgot-password" to="/resetpassword">
-              Forgot password
-            </Link>
-          </div>
-          <div style={{ marginTop: "20px" }}>{alert_element}</div>
-        </form>
+      <div>
+        <YearMonthSelector
+          year={2018}
+          month={1}
+          onChange={(year, month) => console.log(month)}
+          open={this.state.open}
+          onClose={this.handleClose}
+        />
       </div>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      loginUser,
-      dismissAlerts
-    },
-    dispatch
-  );
-};
+export default InvoicePage;
 
-const mapStateToProps = state => {
-  var myProps = _.assign({}, { user: state.user });
-  return myProps;
-};
+/*<YearPicker
+          defaultValue={"select year"}
+          // default is 1900
+          start={2010}
+          // default is current year
+          end={2020}
+          // default is ASCENDING
+          reverse
+          // default is false
+          required={true}
+          // default is false
+          disabled={true}
+          // mandatory
+          value={this.state.year}
+          // mandatory
+          onChange={year => {
+            this.setState({ year });
+            console.log(year);
+          }}
+          id={"year"}
+          name={"year"}
+          classes={"classes"}
+          optionClasses={"option classes"}
+        />
+        <MonthPicker
+          defaultValue={"select month"}
+          // to get months as numbers
+          numeric
+          // default is full name
+          short
+          // default is Titlecase
+          caps
+          // mandatory if end={} is given in YearPicker
+          endYearGiven
+          // mandatory
+          year={this.state.year}
+          // default is false
+          required={true}
+          // default is false
+          disabled={true}
+          // mandatory
+          value={this.state.month}
+          // mandatory
+          onChange={month => {
+            this.setState({ month });
+            console.log(month);
+          }}
+          id={"month"}
+          name={"month"}
+          classes={"classes"}
+          optionClasses={"option classes"}
+        />
+        <DayPicker
+          defaultValue={"select day"}
+          // mandatory
+          year={this.state.year}
+          // mandatory
+          month={this.state.month}
+          // mandatory if end={} is given in YearPicker
+          endYearGiven
+          // default is false
+          required={true}
+          // default is false
+          disabled={true}
+          // mandatory
+          value={this.state.day}
+          // mandatory
+          onChange={day => {
+            this.setState({ day });
+            console.log(day);
+          }}
+          id={"day"}
+          name={"day"}
+          classes={"classes"}
+          optionClasses={"option classes"}
+        /> */
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(InvoicePage);
+// window.downloadFile = function(sUrl) {
+//   //iOS devices do not support downloading. We have to inform user about this.
+//   if (/(iP)/g.test(navigator.userAgent)) {
+//     //alert('Your device does not support files downloading. Please try again in desktop browser.');
+//     window.open(sUrl, "_blank");
+//     return false;
+//   }
 
-window.downloadFile = function(sUrl) {
-  //iOS devices do not support downloading. We have to inform user about this.
-  if (/(iP)/g.test(navigator.userAgent)) {
-    //alert('Your device does not support files downloading. Please try again in desktop browser.');
-    window.open(sUrl, "_blank");
-    return false;
-  }
+//   //If in Chrome or Safari - download via virtual link click
+//   if (window.downloadFile.isChrome || window.downloadFile.isSafari) {
+//     //Creating new link node.
+//     var link = document.createElement("a");
+//     link.href = sUrl;
+//     link.setAttribute("target", "_blank");
 
-  //If in Chrome or Safari - download via virtual link click
-  if (window.downloadFile.isChrome || window.downloadFile.isSafari) {
-    //Creating new link node.
-    var link = document.createElement("a");
-    link.href = sUrl;
-    link.setAttribute("target", "_blank");
+//     if (link.download !== undefined) {
+//       //Set HTML5 download attribute. This will prevent file from opening if supported.
+//       var fileName = sUrl.substring(sUrl.lastIndexOf("/") + 1, sUrl.length);
+//       link.download = fileName;
+//     }
 
-    if (link.download !== undefined) {
-      //Set HTML5 download attribute. This will prevent file from opening if supported.
-      var fileName = sUrl.substring(sUrl.lastIndexOf("/") + 1, sUrl.length);
-      link.download = fileName;
-    }
+//     //Dispatching click event.
+//     if (document.createEvent) {
+//       var e = document.createEvent("MouseEvents");
+//       e.initEvent("click", true, true);
+//       link.dispatchEvent(e);
+//       return true;
+//     }
+//   }
 
-    //Dispatching click event.
-    if (document.createEvent) {
-      var e = document.createEvent("MouseEvents");
-      e.initEvent("click", true, true);
-      link.dispatchEvent(e);
-      return true;
-    }
-  }
+//   // Force file download (whether supported by server).
+//   if (sUrl.indexOf("?") === -1) {
+//     sUrl += "?download";
+//   }
 
-  // Force file download (whether supported by server).
-  if (sUrl.indexOf("?") === -1) {
-    sUrl += "?download";
-  }
+//   window.open(sUrl, "_blank");
+//   return true;
+// };
 
-  window.open(sUrl, "_blank");
-  return true;
-};
-
-window.downloadFile.isChrome =
-  navigator.userAgent.toLowerCase().indexOf("chrome") > -1;
-window.downloadFile.isSafari =
-  navigator.userAgent.toLowerCase().indexOf("safari") > -1;
+// window.downloadFile.isChrome =
+//   navigator.userAgent.toLowerCase().indexOf("chrome") > -1;
+// window.downloadFile.isSafari =
+//   navigator.userAgent.toLowerCase().indexOf("safari") > -1;
