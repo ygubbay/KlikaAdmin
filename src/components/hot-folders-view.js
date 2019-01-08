@@ -73,7 +73,7 @@ export default class HotFoldersView extends React.Component {
     const name = event.target.name;
     const value = event.target.value;
     let new_state = this.state;
-    new_state[name] = value;
+    new_state.print_code[name] = value;
     this.setState(new_state);
   }
 
