@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 // Testing
-import TmpInvoice from "./tmp-invoice";
+//import TmpInvoice from "./tmp-invoice";
 
 class App extends React.Component {
   componentDidUpdate(prevProps) {
@@ -43,7 +43,6 @@ class App extends React.Component {
           <Route exact path="/users" component={UsersPage} />
 
           <Route exact path="/invoicepage" component={InvoicePage} />
-          <Route exact path="/tmpinvoicepage" component={TmpInvoice} />
         </div>
       </BrowserRouter>
     );
