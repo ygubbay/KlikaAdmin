@@ -6,16 +6,16 @@ export default class HotFoldersView extends React.Component {
     super(props);
 
     this.state = {
-      print_code: this.props.printcode,
+      print_code: this.props.printcode
 
       // Pricing fields
-      base_price: "",
-      base_pages: "",
-      addon_price: "",
-      addon_pages: "",
-      box_price: "",
-      copies_per_box: "",
-      packaging_price: ""
+      //base_price: "",
+      // base_pages: "",
+      // addon_price: "",
+      // addon_pages: "",
+      // box_price: "",
+      // copies_per_box: "",
+      // packaging_price: ""
     };
   }
 
@@ -35,7 +35,7 @@ export default class HotFoldersView extends React.Component {
       pc.hot_folder_cover = "";
     }
     // Add price fields to print_code
-    this.addPricesToPC();
+    //this.addPricesToPC();
 
     console.log("What the state: ");
     console.log(this.state);
@@ -77,19 +77,19 @@ export default class HotFoldersView extends React.Component {
     this.setState(new_state);
   }
 
-  addPricesToPC() {
-    let pc = this.state.print_code;
+  // addPricesToPC() {
+  //   let pc = this.state.print_code;
 
-    pc.base_price = this.state.base_price;
-    pc.base_pages = this.state.base_pages;
-    pc.addon_price = this.state.addon_price;
-    pc.addon_pages = this.state.addon_pages;
-    pc.box_price = this.state.box_price;
-    pc.copies_per_box = this.state.copies_per_box;
-    pc.packaging_price = this.state.packaging_price;
+  //   //pc.base_price = this.state.base_price;
+  //   pc.base_pages = this.state.base_pages;
+  //   pc.addon_price = this.state.addon_price;
+  //   pc.addon_pages = this.state.addon_pages;
+  //   pc.box_price = this.state.box_price;
+  //   pc.copies_per_box = this.state.copies_per_box;
+  //   pc.packaging_price = this.state.packaging_price;
 
-    this.setState({ print_code: pc });
-  }
+  //   this.setState({ print_code: pc });
+  // }
 
   isValidPrice(price_field, price_value) {
     const price = parseFloat(price_value);
@@ -183,7 +183,7 @@ export default class HotFoldersView extends React.Component {
                 type="text"
                 className="hotfolder-text"
                 name="base_price"
-                value={this.state.base_price}
+                value={this.state.print_code.base_price}
                 onChange={event => this.onPricingChange(event)}
               />
             </div>
@@ -195,7 +195,7 @@ export default class HotFoldersView extends React.Component {
                 type="text"
                 className="hotfolder-text"
                 name="base_pages"
-                value={this.state.base_num_of_pages}
+                value={this.state.print_code.base_pages}
                 onChange={event => this.onPricingChange(event)}
               />
             </div>
@@ -207,7 +207,7 @@ export default class HotFoldersView extends React.Component {
                 type="text"
                 className="hotfolder-text"
                 name="addon_price"
-                value={this.state.page_price}
+                value={this.state.print_code.addon_price}
                 onChange={event => this.onPricingChange(event)}
               />
             </div>
@@ -219,7 +219,7 @@ export default class HotFoldersView extends React.Component {
                 type="text"
                 className="hotfolder-text"
                 name="addon_pages"
-                value={this.state.page_price}
+                value={this.state.print_code.addon_pages}
                 onChange={event => this.onPricingChange(event)}
               />
             </div>
@@ -231,7 +231,7 @@ export default class HotFoldersView extends React.Component {
                 type="text"
                 className="hotfolder-text"
                 name="box_price"
-                value={this.state.page_price}
+                value={this.state.print_code.box_price}
                 onChange={event => this.onPricingChange(event)}
               />
             </div>
@@ -243,7 +243,7 @@ export default class HotFoldersView extends React.Component {
                 type="text"
                 className="hotfolder-text"
                 name="copies_per_box"
-                value={this.state.page_price}
+                value={this.state.print_code.copies_per_box}
                 onChange={event => this.onPricingChange(event)}
               />
             </div>
@@ -255,7 +255,7 @@ export default class HotFoldersView extends React.Component {
                 type="text"
                 className="hotfolder-text"
                 name="packaging_price"
-                value={this.state.page_price}
+                value={this.state.print_code.packaging_price}
                 onChange={event => this.onPricingChange(event)}
               />
             </div>
