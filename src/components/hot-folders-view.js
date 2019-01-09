@@ -7,15 +7,6 @@ export default class HotFoldersView extends React.Component {
 
     this.state = {
       print_code: this.props.printcode
-
-      // Pricing fields
-      //base_price: "",
-      // base_pages: "",
-      // addon_price: "",
-      // addon_pages: "",
-      // box_price: "",
-      // copies_per_box: "",
-      // packaging_price: ""
     };
   }
 
@@ -37,7 +28,7 @@ export default class HotFoldersView extends React.Component {
     // Add price fields to print_code
     //this.addPricesToPC();
 
-    console.log("What the state: ");
+    console.log("The state: ");
     console.log(this.state);
     console.log("ok");
 

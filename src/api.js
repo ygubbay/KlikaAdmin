@@ -60,12 +60,18 @@ function saveTrackingNumber(order_number, tracking_number) {
 }
 
 exports.ordersDailyPdf = yyyymmdd => {
-  return axios.get(config.api_root + "orders/pdf/daily/" + yyyymmdd);
+  console.log("\n**************************************\n");
+  console.log("date sent for daily order pdf: ", yyyymmdd);
+  console.log("\n**************************************\n");
+  const testing_date = "20190103"; //20190109
+  return axios.get(
+    config.api_root + "orders/pdf/daily/" + testing_date /* yyyymmdd */
+  );
 };
 
 // Invoice pdf
-exports.CreateInvoicePdf = year_month => {
-  return axios.get(config.api_root + "invoice/pdf/" + year_month);
+exports.CreateInvoicePdf = yyyymm => {
+  return axios.get(config.api_root + "invoice/pdf/" + yyyymm);
 };
 
 function orderPrint(orderid) {
