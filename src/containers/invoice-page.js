@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { YearPicker, MonthPicker } from "react-dropdown-date";
+import Header from "../components/Header";
 import * as api from "../api";
 
 // For month and year
@@ -17,10 +18,6 @@ class InvoicePage extends React.Component {
         this.state.month
     );
   }
-
-  /*  getInitialState() {
-    return { year: this.getCurrentYear(), month: this.getCurrentMonth() };
-  } */
 
   // componentWillMount() {
   //    need to do a logout here...
@@ -108,6 +105,8 @@ class InvoicePage extends React.Component {
   render() {
     return (
       <div>
+        <Header />
+
         <MonthPicker
           defaultValue={this.getMonthName(this.state.month)}
           // to get months as numbers
@@ -161,13 +160,16 @@ class InvoicePage extends React.Component {
           optionClasses={"option classes"}
         />
 
-        <div>
+        <div className="col-xs-6" style={{ textAlign: "right" }}>
           <Button
             bsStyle="success"
             onClick={this.onGenerateInvoiceClick.bind(this)}
           >
             Generate Invoice
           </Button>
+        </div>
+        <div>
+          <hr />
         </div>
       </div>
     );

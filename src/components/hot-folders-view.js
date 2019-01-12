@@ -1,12 +1,14 @@
 import React from "react";
 import { Button } from "react-bootstrap";
+import CurrencyInput from "react-currency-input";
 
 export default class HotFoldersView extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      print_code: this.props.printcode
+      print_code: this.props.printcode,
+      base_price_amount: 0
     };
   }
 
@@ -68,20 +70,6 @@ export default class HotFoldersView extends React.Component {
     this.setState(new_state);
   }
 
-  // addPricesToPC() {
-  //   let pc = this.state.print_code;
-
-  //   //pc.base_price = this.state.base_price;
-  //   pc.base_pages = this.state.base_pages;
-  //   pc.addon_price = this.state.addon_price;
-  //   pc.addon_pages = this.state.addon_pages;
-  //   pc.box_price = this.state.box_price;
-  //   pc.copies_per_box = this.state.copies_per_box;
-  //   pc.packaging_price = this.state.packaging_price;
-
-  //   this.setState({ print_code: pc });
-  // }
-
   isValidPrice(price_field, price_value) {
     const price = parseFloat(price_value);
 
@@ -114,6 +102,20 @@ export default class HotFoldersView extends React.Component {
     }
     return true;
   }
+
+  // handleBasePriceChange(event, maskedvalue, floatvalue) {
+  //   this.setState({ [print_code.base_price]: maskedvalue });
+  // }
+
+  /* <div className="fld fld2">
+              <input
+                type="text"
+                className="hotfolder-text"
+                name="base_price"
+                value={this.state.print_code.base_price}
+                onChange={event => this.onPricingChange(event)}
+              />
+            </div> */
 
   render() {
     const print_code = this.state.print_code;
@@ -170,12 +172,11 @@ export default class HotFoldersView extends React.Component {
           <div className="field-row">
             <div className="fld fld1">Base price:</div>
             <div className="fld fld2">
-              <input
-                type="text"
-                className="hotfolder-text"
-                name="base_price"
+              <CurrencyInput
+                prefix="₪"
                 value={this.state.print_code.base_price}
-                onChange={event => this.onPricingChange(event)}
+                name="base_price"
+                onChangeEvent={event => this.onPricingChange(event)}
               />
             </div>
           </div>
@@ -193,13 +194,13 @@ export default class HotFoldersView extends React.Component {
           </div>
           <div className="field-row">
             <div className="fld fld1">Addon price:</div>
+
             <div className="fld fld2">
-              <input
-                type="text"
-                className="hotfolder-text"
-                name="addon_price"
+              <CurrencyInput
+                prefix="₪"
                 value={this.state.print_code.addon_price}
-                onChange={event => this.onPricingChange(event)}
+                name="addon_price"
+                onChangeEvent={event => this.onPricingChange(event)}
               />
             </div>
           </div>
@@ -218,12 +219,11 @@ export default class HotFoldersView extends React.Component {
           <div className="field-row">
             <div className="fld fld1">Box price:</div>
             <div className="fld fld2">
-              <input
-                type="text"
-                className="hotfolder-text"
-                name="box_price"
+              <CurrencyInput
+                prefix="₪"
                 value={this.state.print_code.box_price}
-                onChange={event => this.onPricingChange(event)}
+                name="box_price"
+                onChangeEvent={event => this.onPricingChange(event)}
               />
             </div>
           </div>
@@ -242,12 +242,11 @@ export default class HotFoldersView extends React.Component {
           <div className="field-row">
             <div className="fld fld1">Packaging price:</div>
             <div className="fld fld2">
-              <input
-                type="text"
-                className="hotfolder-text"
-                name="packaging_price"
+              <CurrencyInput
+                prefix="₪"
                 value={this.state.print_code.packaging_price}
-                onChange={event => this.onPricingChange(event)}
+                name="packaging_price"
+                onChangeEvent={event => this.onPricingChange(event)}
               />
             </div>
           </div>

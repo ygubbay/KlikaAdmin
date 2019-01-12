@@ -60,13 +60,7 @@ function saveTrackingNumber(order_number, tracking_number) {
 }
 
 exports.ordersDailyPdf = yyyymmdd => {
-  console.log("\n**************************************\n");
-  console.log("date sent for daily order pdf: ", yyyymmdd);
-  console.log("\n**************************************\n");
-  const testing_date = "20190103"; //20190109
-  return axios.get(
-    config.api_root + "orders/pdf/daily/" + testing_date /* yyyymmdd */
-  );
+  return axios.get(config.api_root + "orders/pdf/daily/" + yyyymmdd);
 };
 
 // Invoice pdf
