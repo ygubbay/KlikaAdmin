@@ -13,11 +13,7 @@ export default class HotFoldersView extends React.Component {
   }
 
   onSaveClick() {
-    if (!this.pricesValid()) {
-      console.log("pricing not valid");
-      // add error alert (maybe through reducer)
-      return;
-    }
+    if (!this.pricesValid()) return;
     console.log("pricing valid");
     console.log("state: " + this.state);
     const pc = this.state.print_code;
@@ -70,36 +66,41 @@ export default class HotFoldersView extends React.Component {
     this.setState(new_state);
   }
 
-  isValidPrice(price_field, price_value) {
+  /* isValidPrice(price_field, price_value) {
     const price = parseFloat(price_value);
 
     // Non desimal was entered:
     if (isNaN(price)) {
       console.log("price input not a number");
-      // alert invalid input price
+      // <Alert invalid input price>
       return false;
     }
     if (price < 0) {
       console.log("price is non-positive");
-      // alert invalid input price
+      // <Alert invalid input price>
       return false;
     }
-    // Maybe check int/float
+
+    return true;
+  } */
+
+  pricesValid() {
+    if (
+      !Number.isInteger(this.state.print_code.base_pages) ||
+      !Number.isInteger(this.state.print_code.addon_pages) ||
+      !Number.isInteger(this.state.print_code.copies_per_box)
+    ) {
+      // <Alert non Integer>
+      console.log("a non integer in input...");
+      return false;
+    }
     return true;
   }
 
-  pricesValid() {
-    console.log("state before: " + this.state.print_code);
-    const all_prices = Object.assign({}, this.state);
-    delete all_prices.print_code;
-    console.log("state after: " + this.state.print_code);
-    for (const price in all_prices) {
-      console.log("key: " + price + "\tvalue: " + all_prices[price]);
-      if (!this.isValidPrice(price, all_prices[price])) {
-        // show invalid alerts
-        return false;
-      }
-    }
+  allowOnlyNumbers(evt) {
+    var charCode = evt.which ? evt.which : event.keyCode;
+    if (charCode == 190) return false;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
     return true;
   }
 
@@ -170,9 +171,12 @@ export default class HotFoldersView extends React.Component {
             <div className="fld fld1">Base pages:</div>
             <div className="fld fld2">
               <input
-                type="text"
+                type="number"
+                min="0"
+                step="1"
                 className="hotfolder-text"
                 name="base_pages"
+                onKeyPress={event => this.allowOnlyNumbers(event)}
                 value={this.state.print_code.base_pages}
                 onChange={event => this.onPricingChange(event)}
               />
@@ -194,9 +198,12 @@ export default class HotFoldersView extends React.Component {
             <div className="fld fld1">Addon pages:</div>
             <div className="fld fld2">
               <input
-                type="text"
+                type="number"
+                min="0"
+                step="1"
                 className="hotfolder-text"
                 name="addon_pages"
+                onKeyPress={event => this.allowOnlyNumbers(event)}
                 value={this.state.print_code.addon_pages}
                 onChange={event => this.onPricingChange(event)}
               />
@@ -217,9 +224,12 @@ export default class HotFoldersView extends React.Component {
             <div className="fld fld1">Copies per box:</div>
             <div className="fld fld2">
               <input
-                type="text"
+                type="number"
+                min="0"
+                step="1"
                 className="hotfolder-text"
                 name="copies_per_box"
+                onKeyPress={event => this.allowOnlyNumbers(event)}
                 value={this.state.print_code.copies_per_box}
                 onChange={event => this.onPricingChange(event)}
               />

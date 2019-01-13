@@ -20,12 +20,12 @@ class InvoicePage extends React.Component {
     );
   }
 
-  // componentWillMount() {
-  //    need to do a logout here...
-  //    const email = utils.getCookie("email");
-  //    if (email != undefined) {
-  //      this.setState({ email: email });
-  //    }
+  //  componentWillMount() {
+  //     //need to do a logout here...
+  //     const email = utils.getCookie("email");
+  //     if (email != undefined) {
+  //       this.setState({ email: email });
+  //     }
   // }
 
   // shouldComponentUpdate(nextProps, nextState) {
@@ -63,6 +63,12 @@ class InvoicePage extends React.Component {
     return monthNames[month_name];
   }
 
+  checkMonthExists() {
+    console.log("No per existing records before 11-2017");
+    if (this.state.year == 2017 && this.state.month < 11) return false;
+    return true;
+  }
+
   // Look at in daily=orders-page.js function-> onPrintOrdersClick()
   onGenerateInvoiceClick() {
     /* if (!this.state.month) {
@@ -82,6 +88,10 @@ class InvoicePage extends React.Component {
         this.state.extra_info.toString()
     );
     console.log("\n--------------------------------------\n");
+    if (!this.checkMonthExists()) {
+      // <Alert>
+      return;
+    }
     api
       .CreateInvoicePdf(this.year_month(), this.state.extra_info.toString())
       .then(response => {
@@ -120,75 +130,79 @@ class InvoicePage extends React.Component {
         <Header />
         <h2>Monthly Invoice</h2>
 
-        <div className="field-row">
-          <Checkbox inline onChange={this.onExtaInfoChange.bind(this)}>
-            Additional data
-          </Checkbox>
-        </div>
+        <div className="container">
+          <MonthPicker
+            defaultValue={this.getMonthName(this.state.month)}
+            // to get months as numbers
+            string
+            // default is full name
+            //long
+            // default is Titlecase
+            //caps
+            // mandatory if end={} is given in YearPicker
+            endYearGiven
+            // mandatory
+            year={this.state.year}
+            // default is false
+            required={true}
+            // default is false
+            disabled={false}
+            // mandatory
+            value={this.state.month}
+            // mandatory
+            onChange={month => {
+              this.setState({ month });
+              console.log(month);
+            }}
+            id={"invoice_month"}
+            name={"month"}
+            classes={"classes"}
+            optionClasses={"option classes"}
+          />
+          <br />
+          <YearPicker
+            defaultValue={this.state.year}
+            // default is 1900
+            start={2017}
+            // default is current year
+            end={this.getCurrentYear()}
+            // default is ASCENDING
+            reverse
+            // default is false
+            required={true}
+            // default is false
+            disabled={false}
+            // mandatory
+            value={this.state.year}
+            // mandatory
+            onChange={year => {
+              this.setState({ year });
+              console.log(year);
+            }}
+            id={"invoice_year"}
+            name={"year"}
+            classes={"classes"}
+            optionClasses={"option classes"}
+          />
 
-        <MonthPicker
-          defaultValue={this.getMonthName(this.state.month)}
-          // to get months as numbers
-          string
-          // default is full name
-          //long
-          // default is Titlecase
-          //caps
-          // mandatory if end={} is given in YearPicker
-          endYearGiven
-          // mandatory
-          year={this.state.year}
-          // default is false
-          required={true}
-          // default is false
-          disabled={false}
-          // mandatory
-          value={this.state.month}
-          // mandatory
-          onChange={month => {
-            this.setState({ month });
-            console.log(month);
-          }}
-          id={"month"}
-          name={"month"}
-          classes={"classes"}
-          optionClasses={"option classes"}
-        />
-        <YearPicker
-          defaultValue={this.state.year}
-          // default is 1900
-          start={2010}
-          // default is current year
-          end={this.getCurrentYear()}
-          // default is ASCENDING
-          reverse
-          // default is false
-          required={true}
-          // default is false
-          disabled={false}
-          // mandatory
-          value={this.state.year}
-          // mandatory
-          onChange={year => {
-            this.setState({ year });
-            console.log(year);
-          }}
-          id={"year"}
-          name={"year"}
-          classes={"classes"}
-          optionClasses={"option classes"}
-        />
+          <div className="field-row">
+            <Checkbox inline onChange={this.onExtaInfoChange.bind(this)}>
+              Additional data
+            </Checkbox>
+          </div>
 
-        <div className="col-xs-6" style={{ textAlign: "right" }}>
-          <Button
-            bsStyle="success"
-            onClick={this.onGenerateInvoiceClick.bind(this)}
-          >
-            Generate Invoice
-          </Button>
-        </div>
-        <div>
-          <hr />
+          <br />
+          <div className="col-xs-6" style={{ textAlign: "right" }}>
+            <Button
+              bsStyle="success"
+              onClick={this.onGenerateInvoiceClick.bind(this)}
+            >
+              Generate Invoice
+            </Button>
+          </div>
+          <div>
+            <hr />
+          </div>
         </div>
       </div>
     );
