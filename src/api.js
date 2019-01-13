@@ -64,8 +64,11 @@ exports.ordersDailyPdf = yyyymmdd => {
 };
 
 // Invoice pdf
-exports.CreateInvoicePdf = yyyymm => {
-  return axios.get(config.api_root + "invoice/pdf/" + yyyymm);
+exports.CreateInvoicePdf = (yyyymm, extra_info) => {
+  console.log("yyyymm: |" + yyyymm + "|\textra_info: |" + extra_info + "|");
+  return axios.get(
+    config.api_root + "invoice/pdf/" + yyyymm + "/" + extra_info
+  );
 };
 
 function orderPrint(orderid) {

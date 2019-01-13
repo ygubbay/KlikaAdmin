@@ -103,20 +103,6 @@ export default class HotFoldersView extends React.Component {
     return true;
   }
 
-  // handleBasePriceChange(event, maskedvalue, floatvalue) {
-  //   this.setState({ [print_code.base_price]: maskedvalue });
-  // }
-
-  /* <div className="fld fld2">
-              <input
-                type="text"
-                className="hotfolder-text"
-                name="base_price"
-                value={this.state.print_code.base_price}
-                onChange={event => this.onPricingChange(event)}
-              />
-            </div> */
-
   render() {
     const print_code = this.state.print_code;
 

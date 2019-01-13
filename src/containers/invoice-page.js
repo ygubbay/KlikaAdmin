@@ -1,16 +1,17 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Checkbox } from "react-bootstrap";
 import { YearPicker, MonthPicker } from "react-dropdown-date";
 import Header from "../components/Header";
 import * as api from "../api";
 
-// For month and year
-//import YearMonthSelector from "react-year-month-selector";
-
 class InvoicePage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { year: this.getCurrentYear(), month: this.getCurrentMonth() };
+    this.state = {
+      year: this.getCurrentYear(),
+      month: this.getCurrentMonth(),
+      extra_info: 0
+    };
     console.log(
       "this.state.year: " +
         this.state.year +
@@ -74,10 +75,15 @@ class InvoicePage extends React.Component {
     } */
     console.log("generating invoice...");
     console.log("\n--------------------------------------\n");
-    console.log("Date that will be passed: " + this.year_month());
+    console.log(
+      "Date that will be passed: " +
+        this.year_month() +
+        "\textra info:" +
+        this.state.extra_info.toString()
+    );
     console.log("\n--------------------------------------\n");
     api
-      .CreateInvoicePdf(this.year_month())
+      .CreateInvoicePdf(this.year_month(), this.state.extra_info.toString())
       .then(response => {
         console.log(
           "something returned in response.... still need to set the downloading in the ui"
@@ -102,10 +108,23 @@ class InvoicePage extends React.Component {
     return year4_month2_format;
   }
 
+  onExtaInfoChange(event) {
+    let new_state = this.state;
+    new_state.extra_info = event.target.checked ? 1 : 0;
+    this.setState(new_state);
+  }
+
   render() {
     return (
-      <div>
+      <div className="ts-page">
         <Header />
+        <h2>Monthly Invoice</h2>
+
+        <div className="field-row">
+          <Checkbox inline onChange={this.onExtaInfoChange.bind(this)}>
+            Additional data
+          </Checkbox>
+        </div>
 
         <MonthPicker
           defaultValue={this.getMonthName(this.state.month)}
