@@ -163,6 +163,7 @@ export default class HotFoldersView extends React.Component {
                 prefix="₪"
                 value={this.state.print_code.base_price}
                 name="base_price"
+                className="price-text"
                 onChangeEvent={event => this.onPricingChange(event)}
               />
             </div>
@@ -190,6 +191,7 @@ export default class HotFoldersView extends React.Component {
                 prefix="₪"
                 value={this.state.print_code.addon_price}
                 name="addon_price"
+                className="price-text"
                 onChangeEvent={event => this.onPricingChange(event)}
               />
             </div>
@@ -216,6 +218,7 @@ export default class HotFoldersView extends React.Component {
                 prefix="₪"
                 value={this.state.print_code.box_price}
                 name="box_price"
+                className="price-text"
                 onChangeEvent={event => this.onPricingChange(event)}
               />
             </div>
@@ -242,6 +245,7 @@ export default class HotFoldersView extends React.Component {
                 prefix="₪"
                 value={this.state.print_code.packaging_price}
                 name="packaging_price"
+                className="price-text"
                 onChangeEvent={event => this.onPricingChange(event)}
               />
             </div>
