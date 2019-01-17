@@ -10,17 +10,7 @@ export default class HotFoldersView extends React.Component {
       print_code: Object.assign({}, this.props.printcode),
       base_price_amount: 0
     };
-
-    //this.initial_print_code = this.props.printcode;
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   console.log(
-  //     "componentWillReceiveProps() was called...\t(props)addon_pages: |" +
-  //       this.props.printcode.addon_pages +
-  //       "|"
-  //   );
-  // }
 
   onSaveClick() {
     if (!this.pricesValid()) return;
@@ -59,12 +49,28 @@ export default class HotFoldersView extends React.Component {
   }
 
   onBookHotFolderChange(event) {
+    // Fix cursor jumping:
+    const caret = event.target.selectionStart;
+    const element = event.target;
+    window.requestAnimationFrame(() => {
+      element.selectionStart = caret;
+      element.selectionEnd = caret;
+    });
+
     let pc = this.state.print_code;
     pc.hot_folder_book = event.target.value;
     this.setState({ print_code: pc });
   }
 
   onCoverHotFolderChange(event) {
+    // Fix cursor jumping:
+    const caret = event.target.selectionStart;
+    const element = event.target;
+    window.requestAnimationFrame(() => {
+      element.selectionStart = caret;
+      element.selectionEnd = caret;
+    });
+
     let pc = this.state.print_code;
     pc.hot_folder_cover = event.target.value;
     this.setState({ print_code: pc });
@@ -173,88 +179,93 @@ export default class HotFoldersView extends React.Component {
 
         <div className="pricing-area">
           <h2>Pricing</h2>
-          <div className="field-row">
-            <div className="fld fld1">Base price:</div>
-            <div className="fld fld2">
-              <CurrencyInput
-                prefix="₪"
-                value={this.state.print_code.base_price}
-                name="base_price"
-                className="price-text"
-                onChangeEvent={event => this.onPricingChange(event)}
-              />
+          <div className="row">
+            <div className="col-xs-4 col-sm-4">
+              <div className="fld fld1">Base price:</div>
+              <div className="fld fld2">
+                <CurrencyInput
+                  prefix="₪"
+                  value={this.state.print_code.base_price}
+                  name="base_price"
+                  className="price-text"
+                  onChangeEvent={event => this.onPricingChange(event)}
+                />
+              </div>
             </div>
-          </div>
-          <div className="field-row">
-            <div className="fld fld1">Base pages:</div>
-            <div className="fld fld2">
-              <input
-                type="number"
-                min="0"
-                step="1"
-                className="hotfolder-text"
-                name="base_pages"
-                onKeyPress={event => this.allowOnlyNumbers(event)}
-                value={this.state.print_code.base_pages}
-                onChange={event => this.onPricingChange(event)}
-              />
-            </div>
-          </div>
-          <div className="field-row">
-            <div className="fld fld1">Addon price:</div>
+            <div className="col-xs-4 col-sm-4">
+              <div className="fld fld1">Addon price:</div>
 
-            <div className="fld fld2">
-              <CurrencyInput
-                prefix="₪"
-                value={this.state.print_code.addon_price}
-                name="addon_price"
-                className="price-text"
-                onChangeEvent={event => this.onPricingChange(event)}
-              />
+              <div className="fld fld2">
+                <CurrencyInput
+                  prefix="₪"
+                  value={this.state.print_code.addon_price}
+                  name="addon_price"
+                  className="price-text"
+                  onChangeEvent={event => this.onPricingChange(event)}
+                />
+              </div>
+            </div>
+            <div className="col-xs-4 col-sm-4">
+              <div className="fld fld1">Box price:</div>
+              <div className="fld fld2">
+                <CurrencyInput
+                  prefix="₪"
+                  value={this.state.print_code.box_price}
+                  name="box_price"
+                  className="price-text"
+                  onChangeEvent={event => this.onPricingChange(event)}
+                />
+              </div>
             </div>
           </div>
-          <div className="field-row">
-            <div className="fld fld1">Addon pages:</div>
-            <div className="fld fld2">
-              <input
-                type="number"
-                min="0"
-                step="1"
-                className="hotfolder-text"
-                name="addon_pages"
-                onKeyPress={event => this.allowOnlyNumbers(event)}
-                value={this.state.print_code.addon_pages}
-                onChange={event => this.onPricingChange(event)}
-              />
+          <div className="row">
+            <div className="col-xs-4 col-sm-4">
+              <div className="fld fld1">Base pages:</div>
+              <div className="fld fld2">
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  className="hotfolder-text"
+                  name="base_pages"
+                  onKeyPress={event => this.allowOnlyNumbers(event)}
+                  value={this.state.print_code.base_pages}
+                  onChange={event => this.onPricingChange(event)}
+                />
+              </div>
+            </div>
+            <div className="col-xs-4 col-sm-4">
+              <div className="fld fld1">Addon pages:</div>
+              <div className="fld fld2">
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  className="hotfolder-text"
+                  name="addon_pages"
+                  onKeyPress={event => this.allowOnlyNumbers(event)}
+                  value={this.state.print_code.addon_pages}
+                  onChange={event => this.onPricingChange(event)}
+                />
+              </div>
+            </div>
+            <div className="col-xs-4 col-sm-4">
+              <div className="fld fld1">Copies per box:</div>
+              <div className="fld fld2">
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  className="hotfolder-text"
+                  name="copies_per_box"
+                  onKeyPress={event => this.allowOnlyNumbers(event)}
+                  value={this.state.print_code.copies_per_box}
+                  onChange={event => this.onPricingChange(event)}
+                />
+              </div>
             </div>
           </div>
-          <div className="field-row">
-            <div className="fld fld1">Box price:</div>
-            <div className="fld fld2">
-              <CurrencyInput
-                prefix="₪"
-                value={this.state.print_code.box_price}
-                name="box_price"
-                className="price-text"
-                onChangeEvent={event => this.onPricingChange(event)}
-              />
-            </div>
-          </div>
-          <div className="field-row">
-            <div className="fld fld1">Copies per box:</div>
-            <div className="fld fld2">
-              <input
-                type="number"
-                min="0"
-                step="1"
-                className="hotfolder-text"
-                name="copies_per_box"
-                onKeyPress={event => this.allowOnlyNumbers(event)}
-                value={this.state.print_code.copies_per_box}
-                onChange={event => this.onPricingChange(event)}
-              />
-            </div>
-          </div>
+
           <div className="field-row">
             <div className="fld fld1">Packaging price:</div>
             <div className="fld fld2">
