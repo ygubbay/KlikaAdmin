@@ -7,10 +7,20 @@ export default class HotFoldersView extends React.Component {
     super(props);
 
     this.state = {
-      print_code: this.props.printcode,
+      print_code: Object.assign({}, this.props.printcode),
       base_price_amount: 0
     };
+
+    //this.initial_print_code = this.props.printcode;
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   console.log(
+  //     "componentWillReceiveProps() was called...\t(props)addon_pages: |" +
+  //       this.props.printcode.addon_pages +
+  //       "|"
+  //   );
+  // }
 
   onSaveClick() {
     if (!this.pricesValid()) return;
@@ -34,7 +44,17 @@ export default class HotFoldersView extends React.Component {
   }
 
   onCancelClick() {
-    this.setState({ print_code: this.props.printcode, base_price_amount: 0 });
+    //this.setState({ print_code: this.props.printcode, base_price_amount: 0 });
+    // this.setState({ print_code: this.props.printcode });
+    console.log(
+      "After cancel pressed:\n(state)addon_pages: |" +
+        this.state.print_code.addon_pages +
+        "|\n(props)addon_pages: |" +
+        this.props.printcode.addon_pages +
+        //"|\n(initial)addon_pages: |" +
+        // this.initial_print_code.addon_pages +
+        "|"
+    );
     this.props.cancelClick();
   }
 
@@ -57,7 +77,7 @@ export default class HotFoldersView extends React.Component {
   }
 
   onPricingChange(event) {
-    // to fix cusor jumping:
+    // Fix cursor jumping:
     const caret = event.target.selectionStart;
     const element = event.target;
     window.requestAnimationFrame(() => {
@@ -66,6 +86,7 @@ export default class HotFoldersView extends React.Component {
     });
 
     const name = event.target.name;
+    // Get rid of shekel symbol
     const value =
       event.target.value[0] == "₪"
         ? Number(event.target.value.substring(1, event.target.value.length))
@@ -79,24 +100,6 @@ export default class HotFoldersView extends React.Component {
     this.setState(new_state);
     console.log("setState was called...");
   }
-
-  /* isValidPrice(price_field, price_value) {
-    const price = parseFloat(price_value);
-
-    // Non desimal was entered:
-    if (isNaN(price)) {
-      console.log("price input not a number");
-      // <Alert invalid input price>
-      return false;
-    }
-    if (price < 0) {
-      console.log("price is non-positive");
-      // <Alert invalid input price>
-      return false;
-    }
-
-    return true;
-  } */
 
   pricesValid() {
     if (
