@@ -34,6 +34,7 @@ export default class HotFoldersView extends React.Component {
   }
 
   onCancelClick() {
+    this.setState({ print_code: this.props.printcode, base_price_amount: 0 });
     this.props.cancelClick();
   }
 
@@ -56,14 +57,27 @@ export default class HotFoldersView extends React.Component {
   }
 
   onPricingChange(event) {
-    console.log("event.target.name: |" + event.target.name + "|");
-    console.log("event.target.value: |" + event.target.value + "|");
+    // to fix cusor jumping:
+    const caret = event.target.selectionStart;
+    const element = event.target;
+    window.requestAnimationFrame(() => {
+      element.selectionStart = caret;
+      element.selectionEnd = caret;
+    });
 
     const name = event.target.name;
-    const value = event.target.value;
+    const value =
+      event.target.value[0] == "₪"
+        ? Number(event.target.value.substring(1, event.target.value.length))
+        : Number(event.target.value);
+
+    console.log("name: |" + name + "|");
+    console.log("value: |" + value + "|");
+
     let new_state = this.state;
     new_state.print_code[name] = value;
     this.setState(new_state);
+    console.log("setState was called...");
   }
 
   /* isValidPrice(price_field, price_value) {
